@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+      android:textSize="16sp" 
+      android:id="@+id/txtDate" 
+      android:layout_height="wrap_content" 
+      android:layout_width="wrap_content"
+      android:background="#003300"/>
+    
+    <ListView
+        android:id="@+id/lstItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+    
+    <TextView 
+      android:textSize="16sp" 
+      android:id="@+id/txtBalance" 
+      android:layout_height="wrap_content" 
+      android:layout_width="wrap_content"
+      android:background="#33CC00"/>
+
+</LinearLayout>
