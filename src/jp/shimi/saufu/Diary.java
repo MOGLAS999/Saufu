@@ -69,10 +69,10 @@ public class Diary extends Activity implements OnClickListener{
         //adb.setMessage("ボタンが押されました。");
         
         // 日付選択テキストボックス＆ダイアログ
-        final SimpleDateFormat dDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        final DateChanger dc = new DateChanger();
         final Calendar dCalendar = Calendar.getInstance();
     	final EditText dateEdit = (EditText)layout.findViewById(R.id.editDialogDate);
-    	dateEdit.setText(dDateFormat.format(dCalendar.getTime()));
+    	dateEdit.setText(dc.ChangeToString(dCalendar.getTime()));
     	dateEdit.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -82,7 +82,7 @@ public class Diary extends Activity implements OnClickListener{
 						dCalendar.set(Calendar.YEAR, year);
 						dCalendar.set(Calendar.MONTH, monthOfYear);
 						dCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-						dateEdit.setText(dDateFormat.format(dCalendar.getTime()));
+						dateEdit.setText(dc.ChangeToString(dCalendar.getTime()));
 					}
 				};
 				
@@ -128,7 +128,11 @@ public class Diary extends Activity implements OnClickListener{
             		if((String)plusMinusButton.getText() == getResources().getString(R.string.minus)){
             			price *= (-1);
             		}
-            		lItem.add(new ItemData(strItem, price, dateEdit.getText().toString()));
+            		
+            		ItemData itemData = new ItemData(strItem, price, dateEdit.getText().toString());
+            		
+            		
+            		//lItem.add(new ItemData(strItem, price, dateEdit.getText().toString()));
 		    	
             		ItemAdapter adapter = new ItemAdapter();
             		listView.setAdapter(adapter);
@@ -223,7 +227,7 @@ public class Diary extends Activity implements OnClickListener{
 	    		textView2 = (TextView) v.findViewById(R.id.textView2);
 	    		textView3 = (TextView) v.findViewById(R.id.textView3);
 	        
-	    		textView1.setText(item.date);
+	    		textView1.setText(item.GetStringDate());
 	    		textView2.setText(item.item);
 	    		String sign = "";
 	    		if(item.price > 0) sign = "+";

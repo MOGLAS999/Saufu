@@ -13,14 +13,10 @@ public class DayData{
 	public Calendar date;
 	public List<ItemData> itemList;
 	public int balance;
-	private static SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+	private DateChanger dc;
 	
 	DayData(){
-		try{
-			this.date.setTime(df.parse("2000/01/01"));
-		} catch (java.text.ParseException e) {
-			this.date = null;
-		}
+		this.date.setTime(dc.ChangeToDate("2000/01/01"));
 		this.itemList = new ArrayList<ItemData>();
 		this.balance = 0;
 	}
@@ -32,7 +28,7 @@ public class DayData{
 	}
 	
 	public String GetStringDate(){
-		return df.format(this.date);
+		return dc.ChangeToString(this.date);
 	}
 	
 	public String GetStringBalance(){
