@@ -29,8 +29,7 @@ public class Diary extends Activity implements OnClickListener{
 
 	private Button button1;
 	private ListView listView;
-	static List<ItemData> lItem = new ArrayList<ItemData>();
-	static List<DayData> lDay = new ArrayList<DayData>();
+	private DayList lDay = new DayList();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class Diary extends Activity implements OnClickListener{
 	public void onResume(){
 		super.onResume();
 		
-		ItemAdapter adapter = new ItemAdapter();
+		DayAdapter adapter = new DayAdapter();
 		listView.setAdapter(adapter);
 	}
 	
@@ -121,7 +120,6 @@ public class Diary extends Activity implements OnClickListener{
             		// 入力内容を取得
             		String strItem  = etxtItem.getText().toString();
             		String strPrice = etxtPrice.getText().toString();
-            		//Log.d("Log", strItem + "/" + strPrice);
 		    	
             		// 数値に変換
             		int price = Integer.parseInt(strPrice);
@@ -130,11 +128,16 @@ public class Diary extends Activity implements OnClickListener{
             		}
             		
             		ItemData itemData = new ItemData(strItem, price, dateEdit.getText().toString());
-            		
+            		DayData d = lDay.GetDayData(itemData.date);
+            		if(d == null){
+            			lDay.AddData(new DayData(itemData.date, 0));
+            			
+            		}
+            		lDay.AddItemData(itemData.date, itemData);
             		
             		//lItem.add(new ItemData(strItem, price, dateEdit.getText().toString()));
 		    	
-            		ItemAdapter adapter = new ItemAdapter();
+            		DayAdapter adapter = new DayAdapter();
             		listView.setAdapter(adapter);
             	}
 			}
@@ -152,12 +155,12 @@ public class Diary extends Activity implements OnClickListener{
 	private class DayAdapter extends BaseAdapter {
 	    @Override
 	    public int getCount() {
-	    	return lDay.size();
+	    	return lDay.GetListSize();
 	    }
 
 	    @Override
 	    public Object getItem(int position) {
-	    	return lDay.get(position);
+	    	return lDay.dataList.get(position);
 	    }
 
 	    @Override
@@ -186,56 +189,65 @@ public class Diary extends Activity implements OnClickListener{
 	    		textDate.setText(day.GetStringDate());
 	    		textBalance.setText(day.GetStringBalance());
 	    		
-	    		//listItem
+	    		/*for(int i = 0; i < lDay.GetListSize(); i++){
+	    			ItemAdapter adapter = new ItemAdapter(lDay.dataList.get(i));
+	    			listItem.setAdapter(adapter);
+	    		}*/
 	    	}
 	    	return v;
 	    }
 	    
+	    private class ItemAdapter extends BaseAdapter {
+	    	DayData d;
+	    	
+	    	ItemAdapter(DayData d){
+	    		this.d = d;
+	    	}
+	    	
+		    @Override
+		    public int getCount() {
+		    	return d.itemList.size();
+		    }
+
+		    @Override
+		    public Object getItem(int position) {
+		    	return d.itemList.get(position);
+		    }
+
+		    @Override
+		    public long getItemId(int position) {
+		    	return position;
+		    }
+
+		    @Override
+		    public View getView(int position, View convertView, ViewGroup parent) {
+		    	TextView textView1;
+		    	TextView textView2;
+		    	TextView textView3;
+		    	View v = convertView;
+
+		    	if(v == null){
+		    		LayoutInflater inflater = (LayoutInflater)
+		            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		    		v = inflater.inflate(R.layout.row, null);
+		    	}
+		    	ItemData item = (ItemData)getItem(position);
+		    	if(item != null){
+		    		textView1 = (TextView) v.findViewById(R.id.textView1);
+		    		textView2 = (TextView) v.findViewById(R.id.textView2);
+		    		textView3 = (TextView) v.findViewById(R.id.textView3);
+		        
+		    		textView1.setText(item.GetStringDate());
+		    		textView2.setText(item.item);
+		    		String sign = "";
+		    		if(item.price > 0) sign = "+";
+		    		textView3.setText(sign + Integer.toString(item.price) + "円");
+		    	}
+		    	return v;
+		    }
+		}
 	}
 	
-	private class ItemAdapter extends BaseAdapter {
-	    @Override
-	    public int getCount() {
-	    	return lItem.size();
-	    }
-
-	    @Override
-	    public Object getItem(int position) {
-	    	return lItem.get(position);
-	    }
-
-	    @Override
-	    public long getItemId(int position) {
-	    	return position;
-	    }
-
-	    @Override
-	    public View getView(int position, View convertView, ViewGroup parent) {
-	    	TextView textView1;
-	    	TextView textView2;
-	    	TextView textView3;
-	    	View v = convertView;
-
-	    	if(v == null){
-	    		LayoutInflater inflater = (LayoutInflater)
-	            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    		v = inflater.inflate(R.layout.row, null);
-	    	}
-	    	ItemData item = (ItemData)getItem(position);
-	    	if(item != null){
-	    		textView1 = (TextView) v.findViewById(R.id.textView1);
-	    		textView2 = (TextView) v.findViewById(R.id.textView2);
-	    		textView3 = (TextView) v.findViewById(R.id.textView3);
-	        
-	    		textView1.setText(item.GetStringDate());
-	    		textView2.setText(item.item);
-	    		String sign = "";
-	    		if(item.price > 0) sign = "+";
-	    		textView3.setText(sign + Integer.toString(item.price) + "円");
-	    	}
-	    	return v;
-	    }
-	    
-	}
+	
 
 }

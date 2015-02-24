@@ -111,7 +111,7 @@ public class MainActivity extends Activity{
 	        textView2 = (TextView) v.findViewById(R.id.textView2);
 	        textView3 = (TextView) v.findViewById(R.id.textView3);
 	        
-	        textView1.setText(item.date);
+	        //textView1.setText(item.date);
 	        textView2.setText(item.item);
 	        textView3.setText(Integer.toString(item.price) + "円");
 	      }

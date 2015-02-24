@@ -34,4 +34,8 @@ public class DayData{
 	public String GetStringBalance(){
 		return Integer.toString(this.balance);
 	}
+	
+	public void AddItem(ItemData newItem){
+		this.itemList.add(newItem);
+	}
 }
