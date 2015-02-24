@@ -30,7 +30,8 @@ public class Diary extends Activity implements OnClickListener{
 	private Button button1;
 	private ListView listView;
 	static List<ItemData> lItem = new ArrayList<ItemData>();
-
+	static List<DayData> lDay = new ArrayList<DayData>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -142,6 +143,50 @@ public class Diary extends Activity implements OnClickListener{
 		});
         adb.setCancelable(false);
         adb.show();
+	}
+	
+	private class DayAdapter extends BaseAdapter {
+	    @Override
+	    public int getCount() {
+	    	return lDay.size();
+	    }
+
+	    @Override
+	    public Object getItem(int position) {
+	    	return lDay.get(position);
+	    }
+
+	    @Override
+	    public long getItemId(int position) {
+	    	return position;
+	    }
+
+	    @Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	    	TextView textDate;
+	    	ListView listItem;
+	    	TextView textBalance;
+	    	View v = convertView;
+
+	    	if(v == null){
+	    		LayoutInflater inflater = (LayoutInflater)
+	            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    		v = inflater.inflate(R.layout.day, null);
+	    	}
+	    	DayData day = (DayData)getItem(position);
+	    	if(day != null){
+	    		textDate = (TextView) v.findViewById(R.id.txtDate);
+	    		listItem = (ListView) v.findViewById(R.id.lstItem);
+	    		textBalance = (TextView) v.findViewById(R.id.txtBalance);
+	        
+	    		textDate.setText(day.GetStringDate());
+	    		textBalance.setText(day.GetStringBalance());
+	    		
+	    		//listItem
+	    	}
+	    	return v;
+	    }
+	    
 	}
 	
 	private class ItemAdapter extends BaseAdapter {
