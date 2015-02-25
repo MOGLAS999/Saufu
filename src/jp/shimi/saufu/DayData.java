@@ -16,17 +16,20 @@ public class DayData{
 	private DateChanger dc;
 	
 	DayData(){
+		this.date = Calendar.getInstance();
 		this.date.setTime(dc.ChangeToDate("2000/01/01"));
 		this.itemList = new ArrayList<ItemData>();
 		this.balance = 0;
+		this.dc = new DateChanger();
 	}
 	
 	DayData(Calendar date, int balance){
 		this.date = date;
 		this.itemList = new ArrayList<ItemData>();
 		this.balance = balance;
+		this.dc = new DateChanger();
 	}
-	
+
 	public String GetStringDate(){
 		return dc.ChangeToString(this.date);
 	}

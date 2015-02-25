@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.util.Log;
+
 
 public class DayList {
 	public List<DayData> dataList;
@@ -61,14 +63,17 @@ public class DayList {
 		return this.dataList.size();
 	}
 	
-	// 指定した日付のデータを返す
-	public DayData GetDayData(Calendar date){
+	// 指定した日付のデータの位置を返す
+	public int GetDayData(Calendar date){
+		DateChanger dc = new DateChanger();
 		for(int i = 0; i < this.dataList.size(); i++){
-			if(this.dataList.get(i).date == date){
-				return this.dataList.get(i);
+			Log.d("GetDayData", dc.ChangeToString(this.dataList.get(i).date) +"=?"+ dc.ChangeToString(date));
+			if(dc.ChangeToString(this.dataList.get(i).date).equals(dc.ChangeToString(date))){
+				Log.d("Check", "if pass");
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 	
 	// 指定した日データの日付のデータを上書き
@@ -82,6 +87,12 @@ public class DayList {
 	
 	// 指定した日にアイテムデータを追加する
 	public void AddItemData(Calendar date, ItemData newItem){
-		this.GetDayData(date).AddItem(newItem);
+		int pos = GetDayData(date);
+		if(pos < 0){
+			Log.d("AddItemData", "Error pos == "+ pos);
+		}
+		else{
+			this.dataList.get(pos).AddItem(newItem);
+		}
 	}
 }

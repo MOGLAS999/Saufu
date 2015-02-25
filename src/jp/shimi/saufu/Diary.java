@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,10 +27,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Diary extends Activity implements OnClickListener{
-
 	private Button button1;
 	private ListView listView;
-	private DayList lDay = new DayList();
+	private DayList lDay = new DayList();;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class Diary extends Activity implements OnClickListener{
 	@Override
 	public void onResume(){
 		super.onResume();
-		
+	
 		DayAdapter adapter = new DayAdapter();
 		listView.setAdapter(adapter);
 	}
@@ -128,16 +128,19 @@ public class Diary extends Activity implements OnClickListener{
             		}
             		
             		ItemData itemData = new ItemData(strItem, price, dateEdit.getText().toString());
-            		DayData d = lDay.GetDayData(itemData.date);
-            		if(d == null){
+            		int d = lDay.GetDayData(itemData.date);
+            		if(d < 0){ 
             			lDay.AddData(new DayData(itemData.date, 0));
-            			
+            			Log.d("Judge Log", "Add Date" + dc.ChangeToString(itemData.date));
+            		}
+            		else {
+            			Log.d("Judge Log", "Date is Exist");   
             		}
             		lDay.AddItemData(itemData.date, itemData);
             		
             		//lItem.add(new ItemData(strItem, price, dateEdit.getText().toString()));
 		    	
-            		DayAdapter adapter = new DayAdapter();
+            		DayAdapter adapter = new DayAdapter(lDay.GetDayData(itemData.date));
             		listView.setAdapter(adapter);
             	}
 			}
@@ -153,6 +156,16 @@ public class Diary extends Activity implements OnClickListener{
 	}
 	
 	private class DayAdapter extends BaseAdapter {
+		private int updatedPosition;
+		
+		DayAdapter(){
+			this.updatedPosition = -1;
+		}
+		
+		DayAdapter(int position){
+			this.updatedPosition = position;
+		}
+		
 	    @Override
 	    public int getCount() {
 	    	return lDay.GetListSize();
@@ -170,84 +183,56 @@ public class Diary extends Activity implements OnClickListener{
 
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
-	    	TextView textDate;
-	    	ListView listItem;
-	    	TextView textBalance;
-	    	View v = convertView;
-
-	    	if(v == null){
+	    	if(convertView == null){
 	    		LayoutInflater inflater = (LayoutInflater)
 	            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    		v = inflater.inflate(R.layout.day, null);
+	    		convertView = inflater.inflate(R.layout.day, null);
 	    	}
 	    	DayData day = (DayData)getItem(position);
 	    	if(day != null){
-	    		textDate = (TextView) v.findViewById(R.id.txtDate);
-	    		listItem = (ListView) v.findViewById(R.id.lstItem);
-	    		textBalance = (TextView) v.findViewById(R.id.txtBalance);
+	    		TextView textDate = (TextView) convertView.findViewById(R.id.txtDate);
+	    		ListView listItem = (ListView) convertView.findViewById(R.id.lstItem);
+	    		TextView textBalance = (TextView) convertView.findViewById(R.id.txtBalance);
 	        
 	    		textDate.setText(day.GetStringDate());
 	    		textBalance.setText(day.GetStringBalance());
 	    		
-	    		/*for(int i = 0; i < lDay.GetListSize(); i++){
-	    			ItemAdapter adapter = new ItemAdapter(lDay.dataList.get(i));
-	    			listItem.setAdapter(adapter);
-	    		}*/
+	    		ItemAdapter adapter = new ItemAdapter(Diary.this, 0, day.itemList);
+	    		listItem.setAdapter(adapter);
 	    	}
-	    	return v;
+	    	return convertView;
 	    }
 	    
-	    private class ItemAdapter extends BaseAdapter {
-	    	DayData d;
+	    private class ItemAdapter extends ArrayAdapter<ItemData> {
+	    	private LayoutInflater inflater;
 	    	
-	    	ItemAdapter(DayData d){
-	    		this.d = d;
-	    	}
+	    	public ItemAdapter(Context context,	int textViewResourceId, List<ItemData> objects) {
+				super(context, textViewResourceId, objects);
+				this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
 	    	
-		    @Override
-		    public int getCount() {
-		    	return d.itemList.size();
-		    }
-
-		    @Override
-		    public Object getItem(int position) {
-		    	return d.itemList.get(position);
-		    }
-
-		    @Override
-		    public long getItemId(int position) {
-		    	return position;
-		    }
-
 		    @Override
 		    public View getView(int position, View convertView, ViewGroup parent) {
-		    	TextView textView1;
-		    	TextView textView2;
-		    	TextView textView3;
-		    	View v = convertView;
-
-		    	if(v == null){
-		    		LayoutInflater inflater = (LayoutInflater)
-		            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    		v = inflater.inflate(R.layout.row, null);
+		    	if(convertView == null){
+		    		convertView = this.inflater.inflate(R.layout.row, null);
 		    	}
 		    	ItemData item = (ItemData)getItem(position);
 		    	if(item != null){
-		    		textView1 = (TextView) v.findViewById(R.id.textView1);
-		    		textView2 = (TextView) v.findViewById(R.id.textView2);
-		    		textView3 = (TextView) v.findViewById(R.id.textView3);
+		    		TextView textView1 = (TextView) convertView.findViewById(R.id.textView1);
+		    		TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
+		    		TextView textView3 = (TextView) convertView.findViewById(R.id.textView3);
 		        
 		    		textView1.setText(item.GetStringDate());
 		    		textView2.setText(item.item);
 		    		String sign = "";
 		    		if(item.price > 0) sign = "+";
 		    		textView3.setText(sign + Integer.toString(item.price) + "円");
+		    		
+		    		//Log.d("ItemAdapter", position +":"+ d.GetStringDate() + "/" + item.item +"~"+d.itemList.size());
 		    	}
-		    	return v;
+		    	return convertView;
 		    }
 		}
-	}
-	
-	
+	}	
 
 }

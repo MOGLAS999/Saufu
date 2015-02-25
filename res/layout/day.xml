@@ -8,8 +8,9 @@
       android:textSize="16sp" 
       android:id="@+id/txtDate" 
       android:layout_height="wrap_content" 
-      android:layout_width="wrap_content"
-      android:background="#003300"/>
+      android:layout_width="match_parent"
+      android:background="#003300"
+      android:textColor="#FFFFFF" />
     
     <ListView
         android:id="@+id/lstItem"
@@ -21,7 +22,7 @@
       android:textSize="16sp" 
       android:id="@+id/txtBalance" 
       android:layout_height="wrap_content" 
-      android:layout_width="wrap_content"
-      android:background="#33CC00"/>
+      android:layout_width="match_parent"
+      android:background="#33CC00" />
 
 </LinearLayout>
