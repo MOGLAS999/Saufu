@@ -1,14 +1,13 @@
 package jp.shimi.saufu;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 import android.util.Log;
 
 public class ItemData{
-	public String item;
-	public int price;
-	public Calendar date;
+	private String item;
+	private int price;
+	private Calendar date;
 	private DateChanger dc;
 	
 	ItemData(){
@@ -30,6 +29,18 @@ public class ItemData{
 		else{
 			this.date.setTime(dc.ChangeToDate(date));
 		}
+	}
+	
+	public String GetItem(){
+		return this.item;
+	}
+	
+	public int GetPrice(){
+		return this.price;
+	}
+	
+	public Calendar GetDate(){
+		return this.date;
 	}
 	
 	public String GetStringDate(){

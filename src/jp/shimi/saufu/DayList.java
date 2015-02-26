@@ -8,7 +8,7 @@ import android.util.Log;
 
 
 public class DayList {
-	public List<DayData> dataList;
+	private  List<DayData> dataList;
 	
 	public DayList(){
 		this.dataList = new ArrayList<DayData>();
@@ -16,6 +16,10 @@ public class DayList {
 	
 	public DayList(List<DayData> dataList){
 		this.dataList = dataList;
+	}
+	
+	public List<DayData> GetList(){
+		return this.dataList;
 	}
 	
 	// 末尾にデータを追加
@@ -67,8 +71,8 @@ public class DayList {
 	public int GetDayData(Calendar date){
 		DateChanger dc = new DateChanger();
 		for(int i = 0; i < this.dataList.size(); i++){
-			Log.d("GetDayData", dc.ChangeToString(this.dataList.get(i).date) +"=?"+ dc.ChangeToString(date));
-			if(dc.ChangeToString(this.dataList.get(i).date).equals(dc.ChangeToString(date))){
+			Log.d("GetDayData", dc.ChangeToString(this.dataList.get(i).GetDate()) +"=?"+ dc.ChangeToString(date));
+			if(dc.ChangeToString(this.dataList.get(i).GetDate()).equals(dc.ChangeToString(date))){
 				Log.d("Check", "if pass");
 				return i;
 			}
@@ -79,7 +83,7 @@ public class DayList {
 	// 指定した日データの日付のデータを上書き
 	public void UpdateData(DayData newData){
 		for(int i = 0; i < this.dataList.size(); i++){
-			if(this.dataList.get(i).date == newData.date){
+			if(this.dataList.get(i).GetDate() == newData.GetDate()){
 				this.dataList.set(i, newData);
 			}
 		}

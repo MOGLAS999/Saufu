@@ -1,18 +1,13 @@
 package jp.shimi.saufu;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import android.net.ParseException;
-
 public class DayData{
-	public Calendar date;
-	public List<ItemData> itemList;
-	public int balance;
+	private Calendar date;
+	private List<ItemData> itemList;
+	private int balance;
 	private DateChanger dc;
 	
 	DayData(){
@@ -30,6 +25,18 @@ public class DayData{
 		this.dc = new DateChanger();
 	}
 
+	public Calendar GetDate(){
+		return this.date;
+	}
+	
+	public List<ItemData> GetItemList(){
+		return this.itemList;
+	}
+	
+	public int GetBalance(){
+		return this.balance;
+	}
+	
 	public String GetStringDate(){
 		return dc.ChangeToString(this.date);
 	}

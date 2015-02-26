@@ -1,7 +1,5 @@
 package jp.shimi.saufu;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -53,8 +51,8 @@ public class Diary extends Activity implements OnClickListener{
 	public void onResume(){
 		super.onResume();
 	
-		DayAdapter adapter = new DayAdapter();
-		listView.setAdapter(adapter);
+		//DayAdapter adapter = new DayAdapter();
+		//listView.setAdapter(adapter);
 	}
 	
 	@Override
@@ -128,19 +126,13 @@ public class Diary extends Activity implements OnClickListener{
             		}
             		
             		ItemData itemData = new ItemData(strItem, price, dateEdit.getText().toString());
-            		int d = lDay.GetDayData(itemData.date);
+            		int d = lDay.GetDayData(itemData.GetDate());
             		if(d < 0){ 
-            			lDay.AddData(new DayData(itemData.date, 0));
-            			Log.d("Judge Log", "Add Date" + dc.ChangeToString(itemData.date));
+            			lDay.AddData(new DayData(itemData.GetDate(), 0));
             		}
-            		else {
-            			Log.d("Judge Log", "Date is Exist");   
-            		}
-            		lDay.AddItemData(itemData.date, itemData);
-            		
-            		//lItem.add(new ItemData(strItem, price, dateEdit.getText().toString()));
+            		lDay.AddItemData(itemData.GetDate(), itemData);
 		    	
-            		DayAdapter adapter = new DayAdapter(lDay.GetDayData(itemData.date));
+            		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
             		listView.setAdapter(adapter);
             	}
 			}
@@ -155,37 +147,17 @@ public class Diary extends Activity implements OnClickListener{
         adb.show();
 	}
 	
-	private class DayAdapter extends BaseAdapter {
-		private int updatedPosition;
+	private class DayAdapter extends ArrayAdapter<DayData> {		
+		private LayoutInflater inflater;
 		
-		DayAdapter(){
-			this.updatedPosition = -1;
+	    public DayAdapter(Context context, int textViewResourceId, List<DayData> objects) {
+			super(context, textViewResourceId, objects);
+			this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
-		
-		DayAdapter(int position){
-			this.updatedPosition = position;
-		}
-		
-	    @Override
-	    public int getCount() {
-	    	return lDay.GetListSize();
-	    }
-
-	    @Override
-	    public Object getItem(int position) {
-	    	return lDay.dataList.get(position);
-	    }
-
-	    @Override
-	    public long getItemId(int position) {
-	    	return position;
-	    }
 
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	    	if(convertView == null){
-	    		LayoutInflater inflater = (LayoutInflater)
-	            getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    		convertView = inflater.inflate(R.layout.day, null);
 	    	}
 	    	DayData day = (DayData)getItem(position);
@@ -196,43 +168,67 @@ public class Diary extends Activity implements OnClickListener{
 	        
 	    		textDate.setText(day.GetStringDate());
 	    		textBalance.setText(day.GetStringBalance());
-	    		
-	    		ItemAdapter adapter = new ItemAdapter(Diary.this, 0, day.itemList);
+	    	
+	    		Log.d("ItemAdapter", "size="+day.GetItemList().size());
+	    		ItemAdapter adapter = new ItemAdapter(position);
 	    		listItem.setAdapter(adapter);
 	    	}
 	    	return convertView;
 	    }
-	    
-	    private class ItemAdapter extends ArrayAdapter<ItemData> {
-	    	private LayoutInflater inflater;
-	    	
-	    	public ItemAdapter(Context context,	int textViewResourceId, List<ItemData> objects) {
-				super(context, textViewResourceId, objects);
-				this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			}
-	    	
-		    @Override
-		    public View getView(int position, View convertView, ViewGroup parent) {
-		    	if(convertView == null){
-		    		convertView = this.inflater.inflate(R.layout.row, null);
-		    	}
-		    	ItemData item = (ItemData)getItem(position);
-		    	if(item != null){
-		    		TextView textView1 = (TextView) convertView.findViewById(R.id.textView1);
-		    		TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
-		    		TextView textView3 = (TextView) convertView.findViewById(R.id.textView3);
-		        
-		    		textView1.setText(item.GetStringDate());
-		    		textView2.setText(item.item);
-		    		String sign = "";
-		    		if(item.price > 0) sign = "+";
-		    		textView3.setText(sign + Integer.toString(item.price) + "円");
-		    		
-		    		//Log.d("ItemAdapter", position +":"+ d.GetStringDate() + "/" + item.item +"~"+d.itemList.size());
-		    	}
-		    	return convertView;
-		    }
-		}
 	}	
+	
+	private class ItemAdapter extends BaseAdapter {
+    	int lDayPosition;
+    	
+    	private class ViewHolder {
+    		TextView date;
+    		TextView item;
+    		TextView price;
+    	}
+    	
+    	public ItemAdapter(int lDayPosition){
+    		this.lDayPosition = lDayPosition;
+    	}
+    	
+    	@Override
+		public int getCount() {
+			return lDay.GetData(this.lDayPosition).GetItemList().size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return lDay.GetData(this.lDayPosition).GetItemList().get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+    	
+	    @Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	    	if(convertView == null){
+	    		LayoutInflater inflater = 
+	    				(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    		convertView = inflater.inflate(R.layout.row, null);
+	    	}
+	    	Log.d("ItemAdapter", "position="+position);
+	    	ItemData item = (ItemData)getItem(position);
+	    	if(item != null){
+	    		TextView textView1 = (TextView) convertView.findViewById(R.id.textView1);
+	    		TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
+	    		TextView textView3 = (TextView) convertView.findViewById(R.id.textView3);
+	        
+	    		textView1.setText(item.GetStringDate());
+	    		textView2.setText(item.GetItem());
+	    		String sign = "";
+	    		if(item.GetPrice() > 0) sign = "+";
+	    		textView3.setText(sign + Integer.toString(item.GetPrice()) + "円");
+	    	}
+	    	return convertView;
+	    }
+
+		
+	}
 
 }
