@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.util.Log;
+
 public class DayData{
 	private Calendar date;
 	private List<ItemData> itemList;
@@ -47,5 +49,11 @@ public class DayData{
 	
 	public void AddItem(ItemData newItem){
 		this.itemList.add(newItem);
+	}
+	
+	public void ShowListLog(){
+		for(int i = 0; i < this.itemList.size(); i++){
+			Log.d("ShowListLog", i+":"+this.itemList.get(i).GetItem()+":"+this.itemList.get(i).GetPrice());
+		}
 	}
 }

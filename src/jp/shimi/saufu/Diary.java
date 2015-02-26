@@ -149,6 +149,17 @@ public class Diary extends Activity implements OnClickListener{
 	
 	private class DayAdapter extends ArrayAdapter<DayData> {		
 		private LayoutInflater inflater;
+		private class ViewHolder{
+			TextView textDate;
+    		ListView listItem;
+    		TextView textBalance;
+    		
+    		ViewHolder(View view){
+    			this.textDate = (TextView) view.findViewById(R.id.txtDate);
+	    		this.listItem = (ListView) view.findViewById(R.id.lstItem);
+	    		this.textBalance = (TextView) view.findViewById(R.id.txtBalance);
+    		}
+		} 
 		
 	    public DayAdapter(Context context, int textViewResourceId, List<DayData> objects) {
 			super(context, textViewResourceId, objects);
@@ -157,78 +168,71 @@ public class Diary extends Activity implements OnClickListener{
 
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
+	    	ViewHolder holder;
+	    	
 	    	if(convertView == null){
 	    		convertView = inflater.inflate(R.layout.day, null);
+	    		holder = new ViewHolder(convertView);
+	    		convertView.setTag(holder);
+	    	}else{
+	    		holder = (ViewHolder)convertView.getTag();
 	    	}
+	    	
 	    	DayData day = (DayData)getItem(position);
-	    	if(day != null){
-	    		TextView textDate = (TextView) convertView.findViewById(R.id.txtDate);
-	    		ListView listItem = (ListView) convertView.findViewById(R.id.lstItem);
-	    		TextView textBalance = (TextView) convertView.findViewById(R.id.txtBalance);
-	        
-	    		textDate.setText(day.GetStringDate());
-	    		textBalance.setText(day.GetStringBalance());
+	    	if(day != null){	        
+	    		holder.textDate.setText(day.GetStringDate());
+	    		holder.textBalance.setText(day.GetStringBalance());
 	    	
 	    		Log.d("ItemAdapter", "size="+day.GetItemList().size());
-	    		ItemAdapter adapter = new ItemAdapter(position);
-	    		listItem.setAdapter(adapter);
+	    		ItemAdapter adapter = new ItemAdapter(Diary.this, 0, day.GetItemList());
+	    		holder.listItem.setAdapter(adapter);
 	    	}
 	    	return convertView;
 	    }
 	}	
 	
-	private class ItemAdapter extends BaseAdapter {
-    	int lDayPosition;
-    	
-    	private class ViewHolder {
-    		TextView date;
-    		TextView item;
-    		TextView price;
+	private class ItemAdapter extends ArrayAdapter<ItemData> {
+		private LayoutInflater inflater;
+		private class ViewHolder{
+    		TextView textDate;
+    		TextView textItem;
+    		TextView textPrice;
+    		
+    		ViewHolder(View view){
+    			this.textDate = (TextView) view.findViewById(R.id.textView1);
+	    		this.textItem = (TextView) view.findViewById(R.id.textView2);
+	    		this.textPrice = (TextView) view.findViewById(R.id.textView3);
+    		}
     	}
-    	
-    	public ItemAdapter(int lDayPosition){
-    		this.lDayPosition = lDayPosition;
-    	}
-    	
-    	@Override
-		public int getCount() {
-			return lDay.GetData(this.lDayPosition).GetItemList().size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return lDay.GetData(this.lDayPosition).GetItemList().get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
+		
+    	public ItemAdapter(Context context, int textViewResourceId, List<ItemData> objects) {
+			super(context, textViewResourceId, objects);
+			this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
     	
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
+	    	ViewHolder holder;
 	    	if(convertView == null){
-	    		LayoutInflater inflater = 
-	    				(LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    		convertView = inflater.inflate(R.layout.row, null);
+	    		holder = new ViewHolder(convertView);
+	    		convertView.setTag(holder);
+	    	}else{
+	    		holder = (ViewHolder)convertView.getTag();
 	    	}
-	    	Log.d("ItemAdapter", "position="+position);
+	    	
+	    	Log.d("getView()", "position="+position);
 	    	ItemData item = (ItemData)getItem(position);
-	    	if(item != null){
-	    		TextView textView1 = (TextView) convertView.findViewById(R.id.textView1);
-	    		TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
-	    		TextView textView3 = (TextView) convertView.findViewById(R.id.textView3);
-	        
-	    		textView1.setText(item.GetStringDate());
-	    		textView2.setText(item.GetItem());
+	    	if(item != null){	
+	    		holder.textDate.setText(item.GetStringDate());
+	    		holder.textItem.setText(item.GetItem());  
+	    		
 	    		String sign = "";
 	    		if(item.GetPrice() > 0) sign = "+";
-	    		textView3.setText(sign + Integer.toString(item.GetPrice()) + "円");
+	    		holder.textPrice.setText(sign + Integer.toString(item.GetPrice()) + "円");
 	    	}
 	    	return convertView;
 	    }
-
-		
 	}
 
 }
