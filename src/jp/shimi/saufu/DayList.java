@@ -23,14 +23,29 @@ public class DayList {
 	}
 	
 	// 末尾にデータを追加
-	public void AddData(DayData fd){
-		this.dataList.add(fd);
+	public void AddData(DayData dd){
+		this.dataList.add(dd);
+		UpdateBalance(GetListSize()-1);
 	}
 	
 	// 指定した位置にデータを追加
-	public void AddData(int index, DayData fd){
-		this.dataList.add(index, fd);
+	public void AddData(int index, DayData dd){
+		this.dataList.add(index, dd);
+		UpdateBalance(index);
 	}
+	
+	// 日付に基づいた位置にデータを追加
+	public void AddDataByDate(DayData dd){
+		for(int i = 0; i < this.dataList.size(); i++){
+			if(dd.GetDate().compareTo(this.GetData(i).GetDate()) < 0){
+				this.dataList.add(i, dd);
+				UpdateBalance(i);
+				return;
+			}
+		}
+		this.AddData(dd);
+		UpdateBalance(GetListSize()-1);
+	}	
 	
 	// 末尾にリストをデータとして追加
 	public void AddList(DayList addList){
@@ -50,6 +65,7 @@ public class DayList {
 	// 指定した位置のデータを削除
 	public void RemoveData(int index){
 		this.dataList.remove(index);
+		UpdateBalance(index);
 	}
 	
 	// データを全削除
@@ -85,6 +101,7 @@ public class DayList {
 		for(int i = 0; i < this.dataList.size(); i++){
 			if(this.dataList.get(i).GetDate() == newData.GetDate()){
 				this.dataList.set(i, newData);
+				UpdateBalance(i);
 			}
 		}
 	}
@@ -97,6 +114,29 @@ public class DayList {
 		}
 		else{
 			this.dataList.get(pos).AddItem(newItem);
+			UpdateBalance(pos);
 		}
 	}
+	
+	// 指定した日付(位置)以降の残金を計算する
+	public void UpdateBalance(int index){
+		if(index <= 0){
+			Log.d("UpdateBalance", "Bad condition pos == "+ index);
+		}
+		else{
+			for(int i = index; i < GetListSize(); i++){
+				int balance = GetData(i-1).GetBalance();
+				for(int j = 0; j < GetData(i).GetItemList().size(); j++){
+					balance += GetData(i).GetItemList().get(j).GetPrice();
+				}
+				GetData(i).SetBalance(balance);
+			}
+		}
+	}
+	
+	public void UpdateBalance(Calendar changedDate){
+		UpdateBalance(GetDayData(changedDate));
+	}
+	
+	
 }

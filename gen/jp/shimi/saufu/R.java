@@ -26,7 +26,7 @@ public final class R {
     public static final class id {
         public static final int LinearLayout1=0x7f080000;
         public static final int LinearLayout2=0x7f08000d;
-        public static final int action_settings=0x7f080019;
+        public static final int action_settings=0x7f08001d;
         public static final int addButton1=0x7f08000f;
         public static final int btnSave=0x7f080005;
         public static final int cDate=0x7f080001;
@@ -37,17 +37,21 @@ public final class R {
         public static final int editDialogDate=0x7f080011;
         public static final int editDialogItem=0x7f080012;
         public static final int editDialogPrice=0x7f080014;
+        public static final int editInitBalance=0x7f080018;
+        public static final int editInitBalanceDate=0x7f080017;
+        public static final int init_balance_dialog=0x7f080016;
         public static final int listView=0x7f08000a;
         public static final int lstItem=0x7f08000b;
         public static final int plusMinusButton=0x7f080013;
-        public static final int textItemPrice=0x7f080017;
+        public static final int textInitBalanceYen=0x7f080019;
+        public static final int textItemPrice=0x7f08001b;
         public static final int textView1=0x7f080015;
         public static final int textView2=0x7f080004;
-        public static final int textView3=0x7f080018;
+        public static final int textView3=0x7f08001c;
         public static final int txtBalance=0x7f08000c;
         public static final int txtDate=0x7f080006;
         public static final int txtItem=0x7f080007;
-        public static final int txtItemName=0x7f080016;
+        public static final int txtItemName=0x7f08001a;
         public static final int txtPrice=0x7f080008;
         public static final int txtYen=0x7f080009;
     }
@@ -56,8 +60,9 @@ public final class R {
         public static final int day=0x7f030001;
         public static final int diary=0x7f030002;
         public static final int diary_dialog=0x7f030003;
-        public static final int item_row=0x7f030004;
-        public static final int row=0x7f030005;
+        public static final int init_balance_dialog=0x7f030004;
+        public static final int item_row=0x7f030005;
+        public static final int row=0x7f030006;
     }
     public static final class menu {
         public static final int diary=0x7f070000;

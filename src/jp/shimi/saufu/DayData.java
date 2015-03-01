@@ -39,6 +39,10 @@ public class DayData{
 		return this.balance;
 	}
 	
+	public int SetBalance(int balance){
+		return this.balance = balance;
+	}
+	
 	public String GetStringDate(){
 		return dc.ChangeToString(this.date);
 	}

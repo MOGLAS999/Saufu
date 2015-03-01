@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/init_balance_dialog"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/editInitBalanceDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusable="false"
+	    android:clickable="true"
+        android:inputType="date" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/editInitBalance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/txtPrice"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textInitBalanceYen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yen"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
+</LinearLayout>
