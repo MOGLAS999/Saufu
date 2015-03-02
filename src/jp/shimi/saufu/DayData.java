@@ -55,6 +55,14 @@ public class DayData{
 		this.itemList.add(newItem);
 	}
 	
+	public void SetItem(int index, ItemData newItem){
+		this.itemList.set(index, newItem);
+	}
+	
+	public void RemoveItem(int index){
+		this.itemList.remove(index);
+	}
+	
 	public void ShowListLog(){
 		for(int i = 0; i < this.itemList.size(); i++){
 			Log.d("ShowListLog", i+":"+this.itemList.get(i).GetItem()+":"+this.itemList.get(i).GetPrice());

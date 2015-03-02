@@ -118,6 +118,30 @@ public class DayList {
 		}
 	}
 	
+	// 指定した日にアイテムデータを上書きする
+	public void SetItemData(Calendar date, ItemData newItem, int itemPos){
+		int pos = GetDayData(date);
+		if(pos < 0){
+			Log.d("AddItemData", "Error pos == "+ pos);
+		}
+		else{
+			this.dataList.get(pos).SetItem(itemPos, newItem);
+			UpdateBalance(pos);
+		}
+	}
+	
+	// 指定した日の指定した位置のアイテムデータを削除する
+	public void RemoveItemData(Calendar date, int itemPos){
+		int pos = GetDayData(date);
+		if(pos < 0){
+			Log.d("AddItemData", "Error pos == "+ pos);
+		}
+		else{
+			this.dataList.get(pos).RemoveItem(itemPos);
+			UpdateBalance(pos);
+		}
+	}
+	
 	// 指定した日付(位置)以降の残金を計算する
 	public void UpdateBalance(int index){
 		if(index <= 0){
@@ -137,6 +161,5 @@ public class DayList {
 	public void UpdateBalance(Calendar changedDate){
 		UpdateBalance(GetDayData(changedDate));
 	}
-	
 	
 }
