@@ -118,6 +118,18 @@ public class DayList {
 		}
 	}
 	
+	// 指定した日の指定した位置にアイテムデータを追加する
+	public void AddItemData(Calendar date, ItemData newItem, int position){
+		int pos = GetDayData(date);
+		if(pos < 0){
+			Log.d("AddItemData", "Error pos == "+ pos);
+		}
+		else{
+			this.dataList.get(pos).AddItem(newItem, position);
+			UpdateBalance(pos);
+		}
+	}
+	
 	// 指定した日にアイテムデータを上書きする
 	public void SetItemData(Calendar date, ItemData newItem, int itemPos){
 		int pos = GetDayData(date);
