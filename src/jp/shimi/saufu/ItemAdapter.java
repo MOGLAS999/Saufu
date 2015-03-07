@@ -80,12 +80,19 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
 			newFragment.show(((Activity)context).getFragmentManager(), "item_menu_dialog");
     	}
     	
+    	/**
+    	 * 編集
+    	 */
     	@Override
     	public void doFitstClick() {
-    		EditItemDialog(item.GetDate(), position);
+    		EditItemDialog dialog = new EditItemDialog(context ,item, position);
+    		dialog.CreateDialog();
     		remove(item);
     	}
 
+    	/**
+    	 * 削除
+    	 */
     	@Override
     	public void doSecondClick() {
     		remove(item);     
