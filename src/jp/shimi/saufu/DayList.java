@@ -83,6 +83,11 @@ public class DayList {
 		return this.dataList.size();
 	}
 	
+	// 指定した位置のデータの持つアイテムの数を返す
+	public int GetItemListSize(int index){
+		return this.GetData(index).GetItemList().size();
+	}
+	
 	// 指定した日付のデータの位置を返す
 	public int GetDayData(Calendar date){
 		DateChanger dc = new DateChanger();
@@ -156,12 +161,13 @@ public class DayList {
 	
 	// 指定した日付(位置)以降の残金を計算する
 	public void UpdateBalance(int index){
-		if(index <= 0){
-			Log.d("UpdateBalance", "Bad condition pos == "+ index);
-		}
-		else{
+		if(index < 0){
+			Log.d("UpdateBalance", "error");
+		}else{
 			for(int i = index; i < GetListSize(); i++){
-				int balance = GetData(i-1).GetBalance();
+				int balance;
+				if(i == 0) balance = 0;
+				else balance = GetData(i-1).GetBalance();
 				for(int j = 0; j < GetData(i).GetItemList().size(); j++){
 					balance += GetData(i).GetItemList().get(j).GetPrice();
 				}
@@ -172,6 +178,20 @@ public class DayList {
 	
 	public void UpdateBalance(Calendar changedDate){
 		UpdateBalance(GetDayData(changedDate));
+	}
+	
+	// データのアイテムリストのサイズを確認し、サイズが0なら削除してそれ以降を再計算する
+	public void CheckItemListSize(){
+		int zeroPos = -1;
+		for(int i = 0; i < GetListSize(); i++){
+			if(GetItemListSize(i) <= 0){
+				RemoveData(i);
+				if(zeroPos == -1){
+					zeroPos = i;
+				}
+			}
+		}
+		UpdateBalance(zeroPos);
 	}
 	
 }

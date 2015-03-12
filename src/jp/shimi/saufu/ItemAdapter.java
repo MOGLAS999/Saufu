@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class ItemAdapter extends ArrayAdapter<ItemData>{
 	private LayoutInflater inflater;
 	private Context context;
+	private ItemRemoveListener itemRemoveListener = null;
 	private class ViewHolder{
 		TextView textDate;
 		TextView textItem;
@@ -66,6 +67,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	ItemData item;
     	int position;
     	
+    	
     	ItemMenuDialog(ItemData item, int position){
     		this.item = item;
     		this.position = position;
@@ -86,8 +88,9 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	@Override
     	public void doFitstClick() {
     		EditItemDialog dialog = new EditItemDialog(context ,item, position);
-    		dialog.CreateDialog();
-    		remove(item);
+    		EditItemDialogListener listener = new EditItemDialogListener();
+    		dialog.CreateDialog(listener);
+    		//remove(item);
     	}
 
     	/**
@@ -95,7 +98,37 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	 */
     	@Override
     	public void doSecondClick() {
-    		remove(item);     
+    		remove(item);
+    		itemRemoveListener.removeItem();
     	}
+    	
+    	private class EditItemDialogListener implements DialogListener{
+
+    		@Override
+    		public void doPositiveClick() {
+    			remove(item);
+    			itemRemoveListener.removeItem();
+    		}
+
+			@Override
+			public void doNegativeClick() {
+				// TODO 自動生成されたメソッド・スタブ
+			}
+    	}
+
     }
+
+    /**
+	 * リスナーを追加
+	 */
+	public void setItemRemoveListener(ItemRemoveListener listener){
+	    this.itemRemoveListener = listener;
+	}
+	    
+	/**
+	 * リスナー削除
+	 */
+	public void removeItemRemoveListener(){
+	    this.itemRemoveListener = null;
+	}
 }

@@ -39,7 +39,15 @@ public class EditItemDialog implements DialogListener{
 	}
 	
 	public void CreateDialog(){
-		// アイテム編集ダイアログを生成        		
+		SubCreateDialog(null);  
+	}
+	
+	public void CreateDialog(DialogListener listener){
+		SubCreateDialog(listener);
+	}
+	
+	private void SubCreateDialog(DialogListener listener){
+		// アイテム編集ダイアログを生成     
 		if(((Activity)context).getFragmentManager().findFragmentByTag("edit_item_dialog") == null){
 			EditItemDialogFragment newFragment;
 			DateChanger dc = new DateChanger();
@@ -49,7 +57,11 @@ public class EditItemDialog implements DialogListener{
 				newFragment = EditItemDialogFragment.newInstance(dc.ChangeToString(this.initDate),
 						this.editPosition, this.itemName, this.itemPrice);
 			}
-			newFragment.setDialogListener(EditItemDialog.this);
+			if(listener == null){
+				newFragment.setDialogListener(EditItemDialog.this);
+			}else{
+				newFragment.setDialogListener(listener);
+			}
 			//newFragment.setCancelable(false);
 			newFragment.show(((Activity)context).getFragmentManager(), "edit_item_dialog");
 		}

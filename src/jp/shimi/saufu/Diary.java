@@ -21,10 +21,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class Diary extends FragmentActivity implements OnClickListener{
+public class Diary extends FragmentActivity implements OnClickListener, DayEmptyListener{
 	private Button button1;
 	private ListView listView;
-	private DayList lDay = new DayList();;
+	private DayList lDay = new DayList();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,9 @@ public class Diary extends FragmentActivity implements OnClickListener{
         
         // 初期残高設定ダイアログ
         if(lDay.GetListSize() == 0){
-        	LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残高", 1);
+    		dialog.CreateDialog();
+        	/*LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         	final View layout = inflater.inflate(R.layout.init_balance_dialog,
         			(ViewGroup)findViewById(R.id.init_balance_dialog));
         
@@ -92,7 +94,7 @@ public class Diary extends FragmentActivity implements OnClickListener{
         			}
         		}
         	});
-        	adb.show();
+        	adb.show();*/
         }
 	}
 
@@ -134,8 +136,6 @@ public class Diary extends FragmentActivity implements OnClickListener{
 			if(itemData.GetDate().equals(initDate)){
 				//lDay.SetItemData(initDate, itemData, editPosition);
 				// 削除処理は各ArrayAdapterで行うので、追加のみ行う
-				DateChanger dc = new DateChanger();
-				Log.d("onReturnValue", dc.ChangeToString(initDate) + "=="+ itemData.GetStringDate());
 				if(editPosition + 1 == lDay.GetListSize()){
 					lDay.AddItemData(itemData.GetDate(), itemData);
 				}else{
@@ -151,5 +151,10 @@ public class Diary extends FragmentActivity implements OnClickListener{
 	
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
 		listView.setAdapter(adapter); 
+	}
+	
+	@Override
+	public void DayBecameEmpty() {
+		lDay.CheckItemListSize();
 	}
 }

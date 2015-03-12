@@ -12,9 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class DayAdapter extends ArrayAdapter<DayData> {		
+public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListener{		
 	private LayoutInflater inflater;
 	private Context context;
+	private DayEmptyListener DEListener = null;
+	
 	private class ViewHolder{
 		TextView textDate;
 		ListView listItem;
@@ -59,6 +61,7 @@ public class DayAdapter extends ArrayAdapter<DayData> {
     		holder.textBalance.setText("残金    " + day.GetStringBalance() + " 円");
     	
     		ItemAdapter adapter = new ItemAdapter(context, 0, day.GetItemList());
+    		adapter.setItemRemoveListener(DayAdapter.this);
     		holder.listItem.setAdapter(adapter);
     		
     		SetListViewHeightBasedOnItem(holder.listItem);
@@ -77,11 +80,11 @@ public class DayAdapter extends ArrayAdapter<DayData> {
     	
     	public void CreateDialog(){
     		// 編集・削除ダイアログを生成        			       			
-			ItemMenuDialogFragment newFragment = 
-					ItemMenuDialogFragment.newInstance(day.GetStringDate());
+			DayMenuDialogFragment newFragment = 
+					DayMenuDialogFragment.newInstance(day.GetStringDate());
 			newFragment.setDialogListener(DayMenuDialog.this);
 			//newFragment.setCancelable(false);
-			newFragment.show(((Activity)context).getFragmentManager(), "item_menu_dialog");
+			newFragment.show(((Activity)context).getFragmentManager(), "day_menu_dialog");
     	}
     	
     	@Override
@@ -115,5 +118,10 @@ public class DayAdapter extends ArrayAdapter<DayData> {
 		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
 		listView.requestLayout();
+	}
+
+	@Override
+	public void removeItem() {
+		DEListener.DayBecameEmpty();
 	}
 }

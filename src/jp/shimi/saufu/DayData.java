@@ -72,4 +72,8 @@ public class DayData{
 			Log.d("ShowListLog", i+":"+this.itemList.get(i).GetItem()+":"+this.itemList.get(i).GetPrice());
 		}
 	}
+	
+	public int GetItemSize(){
+		return this.itemList.size();
+	}
 }
