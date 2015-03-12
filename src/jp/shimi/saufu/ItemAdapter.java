@@ -107,6 +107,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     		@Override
     		public void doPositiveClick() {
     			remove(item);
+    			
     			itemRemoveListener.removeItem();
     		}
 

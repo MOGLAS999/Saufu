@@ -4,27 +4,31 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.MeasureSpec;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListener{		
 	private LayoutInflater inflater;
 	private Context context;
-	private DayEmptyListener DEListener = null;
+	private DayItemDeletedListener DIDListener = null;
 	
 	private class ViewHolder{
 		TextView textDate;
-		ListView listItem;
+		//ListView listItem;
+		LinearLayout listItem;
 		TextView textBalance;
 		
 		ViewHolder(View view){
 			this.textDate = (TextView) view.findViewById(R.id.txtDate);
-    		this.listItem = (ListView) view.findViewById(R.id.lstItem);
+    		//this.listItem = (ListView) view.findViewById(R.id.lstItem);
+			this.listItem = (LinearLayout) view.findViewById(R.id.lstItem);
     		this.textBalance = (TextView) view.findViewById(R.id.txtBalance);
 		}
 	} 
@@ -55,16 +59,20 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
         		public void onClick(View view){            			
         			// 追加・削除ダイアログを生成
         			DayMenuDialog dialog = new DayMenuDialog(day, position);
-        			dialog.CreateDialog();   
+        			dialog.CreateDialog();
         		}
 			});
     		holder.textBalance.setText("残金    " + day.GetStringBalance() + " 円");
     	
     		ItemAdapter adapter = new ItemAdapter(context, 0, day.GetItemList());
     		adapter.setItemRemoveListener(DayAdapter.this);
-    		holder.listItem.setAdapter(adapter);
+    		/*holder.listItem.setAdapter(adapter);
     		
-    		SetListViewHeightBasedOnItem(holder.listItem);
+    		SetListViewHeightBasedOnItem(holder.listItem);*/
+    		holder.listItem.removeAllViews();
+    		for(int i = 0; i < adapter.getCount(); i++){
+    			holder.listItem.addView(adapter.getView(i, null, holder.listItem));
+    		}
     	}
     	return convertView;
     }
@@ -122,6 +130,21 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 
 	@Override
 	public void removeItem() {
-		DEListener.DayBecameEmpty();
+		DIDListener.DayItemDeleted();
+		Log.d("removeItem", "passed");
+	}
+	
+	/**
+	 * リスナーを追加
+	 */
+	public void setDayItemDeletedListener(DayItemDeletedListener listener){
+	    this.DIDListener = listener;
+	}
+	    
+	/**
+	 * リスナー削除
+	 */
+	public void removeDayItemDeletedListener(){
+	    this.DIDListener = null;
 	}
 }

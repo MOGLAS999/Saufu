@@ -21,7 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class Diary extends FragmentActivity implements OnClickListener, DayEmptyListener{
+public class Diary extends FragmentActivity implements OnClickListener, DayItemDeletedListener{
 	private Button button1;
 	private ListView listView;
 	private DayList lDay = new DayList();
@@ -150,11 +150,15 @@ public class Diary extends FragmentActivity implements OnClickListener, DayEmpty
 		}
 	
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayItemDeletedListener(this);
 		listView.setAdapter(adapter); 
 	}
 	
 	@Override
-	public void DayBecameEmpty() {
+	public void DayItemDeleted() {
 		lDay.CheckItemListSize();
+		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayItemDeletedListener(this);
+		listView.setAdapter(adapter); 
 	}
 }
