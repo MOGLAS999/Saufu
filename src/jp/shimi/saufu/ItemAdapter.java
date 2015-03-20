@@ -1,5 +1,6 @@
 package jp.shimi.saufu;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.Activity;
@@ -98,17 +99,18 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	 */
     	@Override
     	public void doSecondClick() {
+    		Calendar c = item.GetDate();
     		remove(item);
-    		itemRemoveListener.removeItem();
+    		itemRemoveListener.removeItem(c);
     	}
     	
     	private class EditItemDialogListener implements DialogListener{
 
     		@Override
     		public void doPositiveClick() {
-    			remove(item);
-    			
-    			itemRemoveListener.removeItem();
+    			Calendar c = item.GetDate();
+        		remove(item);
+        		itemRemoveListener.removeItem(c);
     		}
 
 			@Override

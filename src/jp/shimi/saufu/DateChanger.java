@@ -29,4 +29,15 @@ public class DateChanger {
 			return null;
 		}
 	}
+	
+	public Calendar ChangeToCalendar(String sDate){
+		Calendar cal = Calendar.getInstance();
+		Date d = ChangeToDate(sDate);
+		if(d == null){
+			return null;
+		}else{
+			cal.setTime(d);
+			return cal;
+		} 
+	}
 }

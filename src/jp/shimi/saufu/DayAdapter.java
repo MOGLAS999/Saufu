@@ -1,5 +1,6 @@
 package jp.shimi.saufu;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.Activity;
@@ -129,8 +130,8 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 	}
 
 	@Override
-	public void removeItem() {
-		DIDListener.DayItemDeleted();
+	public void removeItem(Calendar deletedDate) {
+		DIDListener.DayItemDeleted(deletedDate);
 		Log.d("removeItem", "passed");
 	}
 	

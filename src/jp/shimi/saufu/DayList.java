@@ -78,6 +78,15 @@ public class DayList {
 		return this.dataList.get(index);
 	}
 	
+	public DayData GetData(Calendar date){
+		int pos = GetDayData(date);
+		if(pos == -1){
+			return null;
+		}else{
+			return this.dataList.get(pos);
+		}
+	}
+	
 	// データの個数を返す
 	public int GetListSize(){
 		return this.dataList.size();
@@ -114,6 +123,17 @@ public class DayList {
 	// 指定した日にアイテムデータを追加する
 	public void AddItemData(Calendar date, ItemData newItem){
 		int pos = GetDayData(date);
+		if(pos < 0){
+			Log.d("AddItemData", "Error pos == "+ pos);
+		}
+		else{
+			this.dataList.get(pos).AddItem(newItem);
+			UpdateBalance(pos);
+		}
+	}
+	
+	public void AddItemData(ItemData newItem){
+		int pos = GetDayData(newItem.GetDate());
 		if(pos < 0){
 			Log.d("AddItemData", "Error pos == "+ pos);
 		}

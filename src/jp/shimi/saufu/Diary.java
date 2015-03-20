@@ -4,11 +4,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.os.Bundle;
+import android.DB.MySQLiteOpenHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +35,9 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.diary);
 		
+		LoadDayDataFromDB();
+		LoadItemDataFromDB();
+		
 		button1 = (Button)findViewById(R.id.addButton1);
         button1.setOnClickListener(this);
         
@@ -40,64 +47,11 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
         if(lDay.GetListSize() == 0){
         	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残高", 1);
     		dialog.CreateDialog();
-        	/*LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        	final View layout = inflater.inflate(R.layout.init_balance_dialog,
-        			(ViewGroup)findViewById(R.id.init_balance_dialog));
-        
-        	AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        	adb.setTitle("初期残高の設定");
-        	adb.setView(layout);
-        
-        	final DateChanger dc = new DateChanger();
-        	final Calendar dCalendar = Calendar.getInstance();
-        	final EditText dateEdit = (EditText)layout.findViewById(R.id.editInitBalanceDate);
-        	dateEdit.setText(dc.ChangeToString(dCalendar.getTime()));
-        	dateEdit.setOnClickListener(new OnClickListener(){
-        		@Override
-        		public void onClick(View v) {
-        			DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener(){
-        				@Override
-        				public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        					dCalendar.set(Calendar.YEAR, year);
-        					dCalendar.set(Calendar.MONTH, monthOfYear);
-        					dCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        					dateEdit.setText(dc.ChangeToString(dCalendar.getTime()));
-        				}
-        			};
-				
-        			final DatePickerDialog datePickerDialog = new DatePickerDialog(
-        					Diary.this, dateSetListener, 
-        					dCalendar.get(Calendar.YEAR), 
-        					dCalendar.get(Calendar.MONTH),
-        					dCalendar.get(Calendar.DAY_OF_MONTH));
-				
-        			datePickerDialog.show();
-        		}
-        	});
-        	adb.setCancelable(false);
-        	adb.setPositiveButton("設定", new DialogInterface.OnClickListener() {
-        		@Override
-        		public void onClick(DialogInterface dialog, int which) {
-        			EditText etxtBalance  = (EditText)layout.findViewById(R.id.editInitBalance);
-        			if(!etxtBalance.getText().toString().equals("")){
-        				// 入力内容を取得
-        				String strBalance = etxtBalance.getText().toString();
-		    	
-        				// 数値に変換
-        				int initBalance = Integer.parseInt(strBalance);
-        				
-        				DayData dayData = new DayData(dCalendar, initBalance);
-                		lDay.AddData(dayData);
-    		    	
-                		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
-                		listView.setAdapter(adapter);
-        			}
-        		}
-        	});
-        	adb.show();*/
         }
 	}
 
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -110,6 +64,7 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 		super.onResume();
 	
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayItemDeletedListener(this);
 		listView.setAdapter(adapter);
 	}
 	
@@ -152,13 +107,106 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
 		adapter.setDayItemDeletedListener(this);
 		listView.setAdapter(adapter); 
+		
+		SaveDayDataToDB();
+		SaveItemDataToDB();
 	}
 	
 	@Override
-	public void DayItemDeleted() {
+	public void DayItemDeleted(Calendar deletedDate) {
 		lDay.CheckItemListSize();
+		lDay.UpdateBalance(deletedDate);
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
 		adapter.setDayItemDeletedListener(this);
-		listView.setAdapter(adapter); 
+		listView.setAdapter(adapter);
+		
+		SaveDayDataToDB();
+		SaveItemDataToDB();
 	}
+	
+	public void LoadDayDataFromDB(){
+		MySQLiteOpenHelper helper = new MySQLiteOpenHelper(getApplicationContext());
+		SQLiteDatabase db = helper.getReadableDatabase();
+		DateChanger dc = new DateChanger();
+		
+		lDay = new DayList();
+		Cursor c = db.query("day_table", new String[] {"date", "balance"},
+				null, null, null, null, null);
+		
+		boolean isEOF = c.moveToFirst();
+		while (isEOF) {
+			lDay.AddData(new DayData(dc.ChangeToCalendar(c.getString(0)), c.getInt(1)));
+		    isEOF = c.moveToNext();
+		}
+		c.close();
+			 
+		db.close();
+	}
+	
+	public void LoadItemDataFromDB(){
+		MySQLiteOpenHelper helper = new MySQLiteOpenHelper(getApplicationContext());
+		SQLiteDatabase db = helper.getReadableDatabase();
+		
+		Cursor c = db.query("item_table", new String[] {"date", "name", "price"},
+				null, null, null, null, null);
+		
+		boolean isEOF = c.moveToFirst();
+		while (isEOF) {
+			lDay.AddItemData(new ItemData(c.getString(1), c.getInt(2), c.getString(0)));
+		    isEOF = c.moveToNext();
+		}
+		c.close();
+			 
+		db.close();
+	}
+	
+	public void SaveDayDataToDB(){
+		MySQLiteOpenHelper helper = new MySQLiteOpenHelper(getApplicationContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
+		
+		db.delete("day_table", null, null);
+		
+		for(int i = 0; i < lDay.GetListSize(); i++){
+			DayData day = lDay.GetData(i);
+			ContentValues values = new ContentValues();
+			values.put("date", day.GetStringDate());
+			values.put("balance", day.GetBalance());
+			db.insert("day_table", null, values);
+		}
+			 
+		db.close();
+	}
+	
+	public void SaveItemDataToDB(){
+		MySQLiteOpenHelper helper = new MySQLiteOpenHelper(getApplicationContext());
+		SQLiteDatabase db = helper.getWritableDatabase();
+		
+		db.delete("item_table", null, null);
+		
+		for(int i = 0; i < lDay.GetListSize(); i++){
+			DayData day = lDay.GetData(i);
+			for(int j = 0; j < day.GetItemSize(); j++){
+				ItemData item = day.GetItemList().get(j);
+				ContentValues values = new ContentValues();
+				values.put("date", item.GetStringDate());
+				values.put("name", item.GetItem());
+				values.put("price", item.GetPrice());
+				db.insert("item_table", null, values);
+			}
+		}
+			 
+		db.close();
+	}
+	
+	public void InsertDayDataToDB(DayData dayData){
+	}
+	
+	public void InsertItemDataToDB(ItemData itemData, int positonInList){
+	}
+	
+	public void DeleteDayDataFromDB(DayData dayData){
+	}
+	
+	public void DeleteItemDataFromDB(ItemData itemData, int positonInList){
+	}	
 }

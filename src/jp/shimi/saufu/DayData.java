@@ -6,6 +6,12 @@ import java.util.List;
 
 import android.util.Log;
 
+/**
+ * 日ごとのデータ
+ * @param date 日付
+ * @param　itemList 項目のリスト
+ * @param balance 残金
+ */
 public class DayData{
 	private Calendar date;
 	private List<ItemData> itemList;
@@ -43,6 +49,10 @@ public class DayData{
 		return this.balance = balance;
 	}
 	
+	public void AddBalance(int price){
+		this.balance += price;
+	}
+	
 	public String GetStringDate(){
 		return dc.ChangeToString(this.date);
 	}
@@ -67,13 +77,21 @@ public class DayData{
 		this.itemList.remove(index);
 	}
 	
+	public int GetItemSize(){
+		return this.itemList.size();
+	}
+	
+	public int GetDifference(){
+		int dif = 0;
+		for(int i = 0; i < this.itemList.size(); i++){
+			dif += this.itemList.get(i).GetPrice();
+		}
+		return dif;
+	}
+		
 	public void ShowListLog(){
 		for(int i = 0; i < this.itemList.size(); i++){
 			Log.d("ShowListLog", i+":"+this.itemList.get(i).GetItem()+":"+this.itemList.get(i).GetPrice());
 		}
-	}
-	
-	public int GetItemSize(){
-		return this.itemList.size();
 	}
 }
