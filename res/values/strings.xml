@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Saufu</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">設定</string>
     <string name="hello_world">Hello world!</string>
     <string name="yen">円</string>
     <string name="save">記録</string>
@@ -12,6 +12,7 @@
     <string name="printPrice">価格</string>
     <string name="addString">項目を追加</string>
     <string name="title_activity_diary">SaufuDiary</string>
+    <string name="title_activity_preferences">設定</string>
     <string name="txtItem">品目名</string>
     <string name="txtPrice">価格</string>
     <string name="plus">+</string>

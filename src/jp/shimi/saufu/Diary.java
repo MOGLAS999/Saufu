@@ -3,6 +3,8 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
+import jp.shimi.saifu.setting.Preferences;
+
 import android.os.Bundle;
 import android.DB.MySQLiteOpenHelper;
 import android.app.Activity;
@@ -11,12 +13,14 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -49,14 +53,24 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
     		dialog.CreateDialog();
         }
 	}
-
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.diary, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+			case R.id.action_settings:
+				Intent intent = new Intent(this, Preferences.class);
+				startActivity(intent);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
