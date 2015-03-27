@@ -22,16 +22,15 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 	private LayoutInflater inflater;
 	private Context context;
 	private DayItemDeletedListener DIDListener = null;
+	private DayDeletedListener DDListener = null;
 	
 	private class ViewHolder{
 		TextView textDate;
-		//ListView listItem;
 		LinearLayout listItem;
 		TextView textBalance;
 		
 		ViewHolder(View view){
 			this.textDate = (TextView) view.findViewById(R.id.txtDate);
-    		//this.listItem = (ListView) view.findViewById(R.id.lstItem);
 			this.listItem = (LinearLayout) view.findViewById(R.id.lstItem);
     		this.textBalance = (TextView) view.findViewById(R.id.txtBalance);
 		}
@@ -109,7 +108,9 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 
     	@Override
     	public void doSecondClick() {
-    		remove(day);     
+    		Calendar cal = day.GetDate();
+    		remove(day);   
+    		DDListener.DayDeleted(cal);    		
     	}
     }
     
@@ -166,5 +167,19 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 	 */
 	public void removeDayItemDeletedListener(){
 	    this.DIDListener = null;
+	}
+	
+	/**
+	 * リスナーを追加
+	 */
+	public void setDayDeletedListener(DayDeletedListener listener){
+	    this.DDListener = listener;
+	}
+	    
+	/**
+	 * リスナー削除
+	 */
+	public void removeDayDeletedListener(){
+	    this.DDListener = null;
 	}
 }

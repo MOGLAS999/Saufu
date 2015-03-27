@@ -214,4 +214,20 @@ public class DayList {
 		UpdateBalance(zeroPos);
 	}
 	
+	// 指定した日付の次の日付を返す
+	public Calendar GetNextDate(Calendar date){
+		for(int i = 1; i < GetListSize(); i++){
+			DayData d1 = GetData(i-1);
+			DayData d2 = GetData(i);
+			
+			if(d1.GetDate().equals(date)){
+				return d2.GetDate();
+			}
+			else if(d1.GetDate().before(date) && d2.GetDate().after(date)){
+				return d2.GetDate();
+			}
+		}
+		return GetData(GetListSize()-1).GetDate();
+	}
+	
 }

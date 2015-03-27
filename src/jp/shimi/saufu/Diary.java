@@ -29,7 +29,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class Diary extends FragmentActivity implements OnClickListener, DayItemDeletedListener{
+public class Diary extends FragmentActivity implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
 	private Button button1;
 	private ListView listView;
 	private DayList lDay = new DayList();
@@ -78,6 +78,7 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 		super.onResume();
 	
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayDeletedListener(this);
 		adapter.setDayItemDeletedListener(this);
 		listView.setAdapter(adapter);
 		
@@ -121,12 +122,26 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 		}
 	
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayDeletedListener(this);
 		adapter.setDayItemDeletedListener(this);
 		listView.setAdapter(adapter); 
 		
 		SaveDayDataToDB();
 		SaveItemDataToDB();
 	}
+	
+	@Override
+	public void DayDeleted(Calendar deletedDate) {
+		lDay.UpdateBalance(lDay.GetNextDate(deletedDate));
+		
+		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayDeletedListener(this);
+		adapter.setDayItemDeletedListener(this);
+		listView.setAdapter(adapter);
+		
+		SaveDayDataToDB();
+		SaveItemDataToDB();
+	}	
 	
 	@Override
 	public void DayItemDeleted(Calendar deletedDate) {
@@ -224,5 +239,5 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 	}
 	
 	public void DeleteItemDataFromDB(ItemData itemData, int positonInList){
-	}	
+	}
 }

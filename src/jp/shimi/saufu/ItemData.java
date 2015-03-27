@@ -8,6 +8,8 @@ public class ItemData{
 	private String item;
 	private int price;
 	private Calendar date;
+	private int number; // 個数
+	private int category;
 	private DateChanger dc;
 	
 	ItemData(){
@@ -15,6 +17,8 @@ public class ItemData{
 		this.price = 0;
 		this.date = Calendar.getInstance();
 		this.date.setTime(dc.ChangeToDate("2000/01/01"));
+		this.number = 1;
+		this.category = 0;
 		this.dc = new DateChanger();
 	}
 	
@@ -29,6 +33,12 @@ public class ItemData{
 		else{
 			this.date.setTime(dc.ChangeToDate(date));
 		}
+	}
+	
+	ItemData(String item, int price, String date, int number, int category){
+		this(item, price, date);
+		this.number = number;
+		this.category = category;
 	}
 	
 	public String GetItem(){
@@ -46,4 +56,13 @@ public class ItemData{
 	public String GetStringDate(){
 		return dc.ChangeToString(this.date);
 	}
+	
+	public int GetNumber(){
+		return this.number;
+	}
+	
+	public int GetCategory(){
+		return this.category;
+	}
+
 }
