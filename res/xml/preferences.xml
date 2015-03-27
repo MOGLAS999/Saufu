@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="設定">
+    <PreferenceCategory 
+        android:key="setting"
+        android:title="設定">
         <EditTextPreference
             android:key="char_size"
             android:title="文字の大きさ"
+            android:summary="初期値16"
             android:dialogTitle="文字の大きさの変更"
+            android:defaultValue="16"
             android:inputType="number" />
         
         <EditTextPreference
@@ -12,6 +16,7 @@
             android:title="同時表示日数"
             android:summary="画面に一度に表示する日数"
             android:dialogTitle="同時表示日数の変更"
+            android:defaultValue="20"
             android:inputType="number" />
     </PreferenceCategory>
 </PreferenceScreen>

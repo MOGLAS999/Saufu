@@ -5,6 +5,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +57,7 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
     	
     	final DayData day = (DayData)getItem(position);
     	if(day != null){	        
-    		holder.textDate.setText(day.GetStringDate());
+    		holder.textDate.setText(day.GetStringDate() + GetWeekByDate(day.GetDate()));
     		// 各日の日付部分がクリックされた時のイベント
     		holder.textDate.setOnClickListener(new View.OnClickListener() {
         		public void onClick(View view){            			
@@ -64,14 +67,16 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
         		}
 			});
     		holder.textBalance.setText("残金    " + day.GetStringBalance() + " 円");
-    	
+    		
+    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+    		holder.textDate.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		holder.textBalance.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		    	
     		ItemAdapter adapter = new ItemAdapter(context, 0, day.GetItemList());
     		adapter.setItemRemoveListener(DayAdapter.this);
-    		/*holder.listItem.setAdapter(adapter);
     		
-    		SetListViewHeightBasedOnItem(holder.listItem);*/
     		holder.listItem.removeAllViews();
-    		for(int i = 0; i < adapter.getCount(); i++){
+    		for(int i = 0; i < adapter.getCount(); i++){		
     			holder.listItem.addView(adapter.getView(i, null, holder.listItem));
     		}
     	}
@@ -128,6 +133,20 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 		listView.setLayoutParams(params);
 		listView.requestLayout();
 	}
+    
+    public String GetWeekByDate(Calendar cal){
+    	switch(cal.get(Calendar.DAY_OF_WEEK)){
+    		case Calendar.SUNDAY:    return "(日)";
+    		case Calendar.MONDAY:    return "(月)";
+    		case Calendar.TUESDAY:   return "(火)";
+    		case Calendar.WEDNESDAY: return "(水)";
+    		case Calendar.THURSDAY:  return "(木)";
+    		case Calendar.FRIDAY:    return "(金)";
+    		case Calendar.SATURDAY:  return "(土)";
+    	}
+    	
+    	return null;
+    }
 
 	@Override
 	public void removeItem(Calendar deletedDate) {

@@ -80,6 +80,8 @@ public class Diary extends FragmentActivity implements OnClickListener, DayItemD
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
 		adapter.setDayItemDeletedListener(this);
 		listView.setAdapter(adapter);
+		
+		listView.setSelection(lDay.GetListSize());
 	}
 	
 	@Override

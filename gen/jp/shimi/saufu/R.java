@@ -10,6 +10,12 @@ package jp.shimi.saufu;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int list_background_first_pressed=0x7f050001;
+        public static final int list_background_first_unpressed=0x7f050000;
+        public static final int list_background_second_pressed=0x7f050003;
+        public static final int list_background_second_unpressed=0x7f050002;
+    }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
 
@@ -17,45 +23,47 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int list_item_color1=0x7f020001;
+        public static final int list_item_color2=0x7f020002;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f090000;
-        public static final int LinearLayout2=0x7f09000d;
-        public static final int action_settings=0x7f09001f;
-        public static final int addButton1=0x7f09000f;
-        public static final int btnSave=0x7f090005;
-        public static final int cDate=0x7f090001;
-        public static final int diaryListView=0x7f09000e;
-        public static final int diarydialog_layout=0x7f090010;
-        public static final int eItem=0x7f090002;
-        public static final int ePrice=0x7f090003;
-        public static final int editDialogDate=0x7f090011;
-        public static final int editDialogItem=0x7f090012;
-        public static final int editDialogPrice=0x7f090014;
-        public static final int editInitBalance=0x7f09001a;
-        public static final int editInitBalanceDate=0x7f090019;
-        public static final int edit_delete_layout=0x7f090016;
-        public static final int init_balance_dialog=0x7f090018;
-        public static final int listEditDelete=0x7f090017;
-        public static final int listView=0x7f09000a;
-        public static final int lstItem=0x7f09000b;
-        public static final int plusMinusButton=0x7f090013;
-        public static final int textInitBalanceYen=0x7f09001b;
-        public static final int textItemPrice=0x7f09001d;
-        public static final int textView1=0x7f090015;
-        public static final int textView2=0x7f090004;
-        public static final int textView3=0x7f09001e;
-        public static final int txtBalance=0x7f09000c;
-        public static final int txtDate=0x7f090006;
-        public static final int txtItem=0x7f090007;
-        public static final int txtItemName=0x7f09001c;
-        public static final int txtPrice=0x7f090008;
-        public static final int txtYen=0x7f090009;
+        public static final int LinearLayout1=0x7f0a0000;
+        public static final int LinearLayout2=0x7f0a000d;
+        public static final int action_settings=0x7f0a001f;
+        public static final int addButton1=0x7f0a000f;
+        public static final int btnSave=0x7f0a0005;
+        public static final int cDate=0x7f0a0001;
+        public static final int diaryListView=0x7f0a000e;
+        public static final int diarydialog_layout=0x7f0a0010;
+        public static final int eItem=0x7f0a0002;
+        public static final int ePrice=0x7f0a0003;
+        public static final int editDialogDate=0x7f0a0011;
+        public static final int editDialogItem=0x7f0a0012;
+        public static final int editDialogPrice=0x7f0a0014;
+        public static final int editInitBalance=0x7f0a001a;
+        public static final int editInitBalanceDate=0x7f0a0019;
+        public static final int edit_delete_layout=0x7f0a0016;
+        public static final int init_balance_dialog=0x7f0a0018;
+        public static final int listEditDelete=0x7f0a0017;
+        public static final int listView=0x7f0a000a;
+        public static final int lstItem=0x7f0a000b;
+        public static final int plusMinusButton=0x7f0a0013;
+        public static final int textInitBalanceYen=0x7f0a001b;
+        public static final int textItemPrice=0x7f0a001d;
+        public static final int textView1=0x7f0a0015;
+        public static final int textView2=0x7f0a0004;
+        public static final int textView3=0x7f0a001e;
+        public static final int txtBalance=0x7f0a000c;
+        public static final int txtDate=0x7f0a0006;
+        public static final int txtItem=0x7f0a0007;
+        public static final int txtItemName=0x7f0a001c;
+        public static final int txtPrice=0x7f0a0008;
+        public static final int txtYen=0x7f0a0009;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -68,26 +76,26 @@ public final class R {
         public static final int row=0x7f030007;
     }
     public static final class menu {
-        public static final int diary=0x7f080000;
-        public static final int main=0x7f080001;
+        public static final int diary=0x7f090000;
+        public static final int main=0x7f090001;
     }
     public static final class string {
-        public static final int action_settings=0x7f060001;
-        public static final int addString=0x7f060009;
-        public static final int app_name=0x7f060000;
-        public static final int hello_world=0x7f060002;
-        public static final int item=0x7f060005;
-        public static final int minus=0x7f06000f;
-        public static final int plus=0x7f06000e;
-        public static final int printItem=0x7f060006;
-        public static final int printPrice=0x7f060008;
-        public static final int printYen=0x7f060007;
-        public static final int save=0x7f060004;
-        public static final int title_activity_diary=0x7f06000a;
-        public static final int title_activity_preferences=0x7f06000b;
-        public static final int txtItem=0x7f06000c;
-        public static final int txtPrice=0x7f06000d;
-        public static final int yen=0x7f060003;
+        public static final int action_settings=0x7f070001;
+        public static final int addString=0x7f070009;
+        public static final int app_name=0x7f070000;
+        public static final int hello_world=0x7f070002;
+        public static final int item=0x7f070005;
+        public static final int minus=0x7f07000f;
+        public static final int plus=0x7f07000e;
+        public static final int printItem=0x7f070006;
+        public static final int printPrice=0x7f070008;
+        public static final int printYen=0x7f070007;
+        public static final int save=0x7f070004;
+        public static final int title_activity_diary=0x7f07000a;
+        public static final int title_activity_preferences=0x7f07000b;
+        public static final int txtItem=0x7f07000c;
+        public static final int txtPrice=0x7f07000d;
+        public static final int yen=0x7f070003;
     }
     public static final class style {
         /** 
@@ -111,11 +119,11 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f080001;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

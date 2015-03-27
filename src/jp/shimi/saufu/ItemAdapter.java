@@ -3,8 +3,12 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
+import jp.shimi.saifu.setting.Preferences;
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +20,16 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
 	private Context context;
 	private ItemRemoveListener itemRemoveListener = null;
 	private class ViewHolder{
-		TextView textDate;
+		//TextView textDate;
 		TextView textItem;
 		TextView textPrice;
 		
 		ViewHolder(View view){
-			this.textDate = (TextView) view.findViewById(R.id.textView1);
-    		this.textItem = (TextView) view.findViewById(R.id.textView2);
-    		this.textPrice = (TextView) view.findViewById(R.id.textView3);
+			//this.textDate = (TextView) view.findViewById(R.id.textView1);
+    		//this.textItem = (TextView) view.findViewById(R.id.textView2);
+    		//this.textPrice = (TextView) view.findViewById(R.id.textView3);
+    		this.textItem = (TextView) view.findViewById(R.id.txtItemName);
+    		this.textPrice = (TextView) view.findViewById(R.id.textItemPrice);
 		}
 	}
 	
@@ -37,7 +43,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     public View getView(final int position, View convertView, ViewGroup parent) {
     	ViewHolder holder;
     	if(convertView == null){
-    		convertView = inflater.inflate(R.layout.row, null);
+    		convertView = inflater.inflate(R.layout.item_row, null);
     		holder = new ViewHolder(convertView);
     		convertView.setTag(holder);
     	}else{
@@ -45,13 +51,25 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	}
     	
     	final ItemData item = (ItemData)getItem(position);
-    	if(item != null){	
-    		holder.textDate.setText(item.GetStringDate());
+    	if(item != null){	    		
+    		//holder.textDate.setText(item.GetStringDate());
     		holder.textItem.setText(item.GetItem());  
     		
     		String sign = "";
     		if(item.GetPrice() > 0) sign = "+";
     		holder.textPrice.setText(sign + Integer.toString(item.GetPrice()) + "円");
+    		
+    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+    		//holder.textDate.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		holder.textItem.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		holder.textPrice.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		
+    		// 背景色を交互に変更
+			if(position % 2 == 0){
+    			convertView.setBackgroundResource(R.drawable.list_item_color1);
+    		}else{
+    			convertView.setBackgroundResource(R.drawable.list_item_color2);
+    		}
     	}
     	
     	convertView.setOnClickListener(new View.OnClickListener() {
