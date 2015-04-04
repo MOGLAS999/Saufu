@@ -1,6 +1,14 @@
-package jp.shimi.saufu;
+package jp.shimi.saihu.dialog;
 
 import java.util.Calendar;
+
+import jp.shimi.saufu.DateChanger;
+import jp.shimi.saufu.Diary;
+import jp.shimi.saufu.ItemData;
+import jp.shimi.saufu.R;
+import jp.shimi.saufu.R.id;
+import jp.shimi.saufu.R.layout;
+import jp.shimi.saufu.R.string;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -9,6 +17,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +27,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class EditItemDialogFragment extends DialogFragment{
+	LayoutInflater inflater;
 	private DialogListener listener = null;
 	
 	public static EditItemDialogFragment newInstance(String initDate) {
@@ -30,13 +42,15 @@ public class EditItemDialogFragment extends DialogFragment{
 		args.putInt("edit_position", -1);
 		args.putString("item_name", "");
 		args.putInt("item_price", 0);
+		args.putInt("item_number", 1);
+		args.putInt("item_category", 0);
 		fragment.setArguments(args);
 		 
 		return fragment;
 	} 
 	
 	public static EditItemDialogFragment newInstance(String initDate, int editPosition,
-			String itemName, int itemPrice) {
+			String itemName, int itemPrice, int itemNumber, int itemCategory) {
 		EditItemDialogFragment fragment = new EditItemDialogFragment();
 		  
 		Bundle args = new Bundle();
@@ -44,6 +58,8 @@ public class EditItemDialogFragment extends DialogFragment{
 		args.putInt("edit_position", editPosition);
 		args.putString("item_name", itemName);
 		args.putInt("item_price", itemPrice);
+		args.putInt("item_number", itemNumber);
+		args.putInt("item_category", itemCategory);
 		fragment.setArguments(args);
 		 
 		return fragment;
@@ -51,7 +67,7 @@ public class EditItemDialogFragment extends DialogFragment{
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstatnceState){	
-		LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = inflater.inflate(R.layout.diary_dialog,
         		(ViewGroup)getActivity().findViewById(R.id.diarydialog_layout));
         
@@ -67,12 +83,58 @@ public class EditItemDialogFragment extends DialogFragment{
 		initDate.setTime(dc.ChangeToDate(getArguments().getString("init_date"))); 
         final Calendar dCalendar = initDate;
         
+        EditText editItem = (EditText)layout.findViewById(R.id.editDialogItem);
+        EditText editPrice = (EditText)layout.findViewById(R.id.editDialogPrice);
+        EditText editNumber = (EditText)layout.findViewById(R.id.editDialogNumber);
+        TextView textTotalPrice = (TextView)layout.findViewById(R.id.textTotalPrice);
+        
+        textTotalPrice.setWidth(textTotalPrice.getWidth());
+        
+        // テキスト入力を監視
+        editPrice.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void afterTextChanged(Editable s){	
+				setTotalPrice(layout);
+			}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+        });
+        editNumber.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void afterTextChanged(Editable s){	
+				setTotalPrice(layout);
+			}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+        });
+        
+        // 編集の場合EditTextを元データで初期化する
         if(editPosition >= 0){
-        	EditText itemEdit = (EditText)layout.findViewById(R.id.editDialogItem);
-        	EditText priceEdit = (EditText)layout.findViewById(R.id.editDialogPrice);
+        	//EditText editItem = (EditText)layout.findViewById(R.id.editDialogItem);
+        	//EditText editPrice = (EditText)layout.findViewById(R.id.editDialogPrice);
+        	//EditText editNumber = (EditText)layout.findViewById(R.id.editDialogNumber);
 
-        	itemEdit.setText(getArguments().getString("item_name"));    	
-        	priceEdit.setText(Integer.toString(Math.abs(getArguments().getInt("item_price"))));
+        	int itemPrice = getArguments().getInt("item_price");
+        	int itemNumber = getArguments().getInt("item_number");
+        	
+        	editItem.setText(getArguments().getString("item_name"));    	
+        	editPrice.setText(Integer.toString(Math.abs(itemPrice)));
+        	editNumber.setText(Integer.toString(itemNumber));
+        	
+        	if(itemNumber > 1){
+        		//TextView textTotalPrice = (TextView)layout.findViewById(R.id.textTotalPrice);
+        		
+        		long totalPrice = itemPrice * itemNumber;		
+        		textTotalPrice.setText(Long.toString(totalPrice));
+        	}
         }
         
     	final EditText dateEdit = (EditText)layout.findViewById(R.id.editDialogDate);
@@ -170,5 +232,23 @@ public class EditItemDialogFragment extends DialogFragment{
 	 */
 	public void removeDialogListener(){
 	    this.listener = null;
+	}
+
+	private void setTotalPrice(View v){
+		TextView textTotalPrice = (TextView)v.findViewById(R.id.textTotalPrice);
+		EditText editPrice = (EditText)v.findViewById(R.id.editDialogPrice);
+		EditText editNumber = (EditText)v.findViewById(R.id.editDialogNumber);
+		
+		if(editPrice.getText().toString().isEmpty() ||
+				editNumber.getText().toString().isEmpty()){
+			textTotalPrice.setText(R.string.total_price);
+		}
+		else{
+			long itemPrice = Long.parseLong(editPrice.getText().toString());
+    		long itemNumber = Long.parseLong(editNumber.getText().toString());
+		
+			long totalPrice = itemPrice * itemNumber;		
+			textTotalPrice.setText(Long.toString(totalPrice));
+		}
 	}
 }	

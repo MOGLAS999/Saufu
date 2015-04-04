@@ -4,6 +4,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import jp.shimi.saifu.setting.Preferences;
+import jp.shimi.saihu.dialog.DayDeletedListener;
+import jp.shimi.saihu.dialog.DayItemDeletedListener;
+import jp.shimi.saihu.dialog.EditItemDialog;
 
 import android.os.Bundle;
 import android.DB.MySQLiteOpenHelper;
@@ -49,7 +52,7 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
         
         // 初期残高設定ダイアログ
         if(lDay.GetListSize() == 0){
-        	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残高", 1);
+        	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残高", 1, 1, 0);
     		dialog.CreateDialog();
         }
 	}
@@ -178,12 +181,14 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 		MySQLiteOpenHelper helper = new MySQLiteOpenHelper(getApplicationContext());
 		SQLiteDatabase db = helper.getReadableDatabase();
 		
-		Cursor c = db.query("item_table", new String[] {"date", "name", "price"},
+		Cursor c = db.query("item_table", 
+				new String[] {"date", "name", "price", "number", "category"},
 				null, null, null, null, null);
 		
 		boolean isEOF = c.moveToFirst();
 		while (isEOF) {
-			lDay.AddItemData(new ItemData(c.getString(1), c.getInt(2), c.getString(0)));
+			lDay.AddItemData(new ItemData(c.getString(1), c.getInt(2), c.getString(0), 
+					c.getInt(3), c.getInt(4)));
 		    isEOF = c.moveToNext();
 		}
 		c.close();
@@ -222,6 +227,8 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 				values.put("date", item.GetStringDate());
 				values.put("name", item.GetItem());
 				values.put("price", item.GetPrice());
+				values.put("number", item.GetNumber());
+				values.put("category", item.GetCategory());
 				db.insert("item_table", null, values);
 			}
 		}

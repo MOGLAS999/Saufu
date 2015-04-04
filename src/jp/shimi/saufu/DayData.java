@@ -18,7 +18,7 @@ public class DayData{
 	private int balance;
 	private DateChanger dc;
 	
-	DayData(){
+	public DayData(){
 		this.date = Calendar.getInstance();
 		this.date.setTime(dc.ChangeToDate("2000/01/01"));
 		this.itemList = new ArrayList<ItemData>();
@@ -26,7 +26,7 @@ public class DayData{
 		this.dc = new DateChanger();
 	}
 	
-	DayData(Calendar date, int balance){
+	public DayData(Calendar date, int balance){
 		this.date = date;
 		this.itemList = new ArrayList<ItemData>();
 		this.balance = balance;

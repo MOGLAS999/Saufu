@@ -4,15 +4,23 @@ import java.util.Calendar;
 import java.util.List;
 
 import jp.shimi.saifu.setting.Preferences;
+import jp.shimi.saihu.dialog.DialogListener;
+import jp.shimi.saihu.dialog.EditItemDialog;
+import jp.shimi.saihu.dialog.ItemMenuDialogFragment;
+import jp.shimi.saihu.dialog.ItemRemoveListener;
+import jp.shimi.saihu.dialog.MenuListener;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ItemAdapter extends ArrayAdapter<ItemData>{
@@ -20,14 +28,12 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
 	private Context context;
 	private ItemRemoveListener itemRemoveListener = null;
 	private class ViewHolder{
-		//TextView textDate;
+		Button btnCategory;
 		TextView textItem;
 		TextView textPrice;
 		
 		ViewHolder(View view){
-			//this.textDate = (TextView) view.findViewById(R.id.textView1);
-    		//this.textItem = (TextView) view.findViewById(R.id.textView2);
-    		//this.textPrice = (TextView) view.findViewById(R.id.textView3);
+			this.btnCategory = (Button) view.findViewById(R.id.buttonCategory);
     		this.textItem = (TextView) view.findViewById(R.id.txtItemName);
     		this.textPrice = (TextView) view.findViewById(R.id.textItemPrice);
 		}
@@ -51,8 +57,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	}
     	
     	final ItemData item = (ItemData)getItem(position);
-    	if(item != null){	    		
-    		//holder.textDate.setText(item.GetStringDate());
+    	if(item != null){	    	
     		holder.textItem.setText(item.GetItem());  
     		
     		String sign = "";
@@ -60,7 +65,12 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     		holder.textPrice.setText(sign + Integer.toString(item.GetPrice()) + "円");
     		
     		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-    		//holder.textDate.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		
+    		ViewGroup.LayoutParams params = holder.btnCategory.getLayoutParams();
+    		params.width = (int) convertDpToPixel(Float.parseFloat(pref.getString("char_size", "16")), context);
+    	    params.height = params.width;
+    	    holder.btnCategory.setLayoutParams(params);
+    		
     		holder.textItem.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
     		holder.textPrice.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
     		
@@ -151,5 +161,19 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
 	 */
 	public void removeItemRemoveListener(){
 	    this.itemRemoveListener = null;
+	}
+	
+	/**                                                                                                                
+	 * This method convets dp unit to equivalent device specific value in pixels.
+	 *
+	 * @param dp A value in dp(Device independent pixels) unit which will be converted to pixels
+	 * @param context Context to get resources and device specific display metrics
+	 * @return A float value to represent Pixels equivalent to dp according to device
+	 */
+	public static float convertDpToPixel(float dp, Context context){
+	    Resources resources = context.getResources();
+	    DisplayMetrics metrics = resources.getDisplayMetrics();
+	    float px = dp * (metrics.densityDpi /160f);
+	    return px;
 	}
 }

@@ -12,7 +12,7 @@ public class ItemData{
 	private int category;
 	private DateChanger dc;
 	
-	ItemData(){
+	public ItemData(){
 		this.item = "";
 		this.price = 0;
 		this.date = Calendar.getInstance();
@@ -22,7 +22,7 @@ public class ItemData{
 		this.dc = new DateChanger();
 	}
 	
-	ItemData(String item, int price, String date){
+	public ItemData(String item, int price, String date){
 		this.item = item;
 		this.price = price;
 		this.dc = new DateChanger();
@@ -35,7 +35,7 @@ public class ItemData{
 		}
 	}
 	
-	ItemData(String item, int price, String date, int number, int category){
+	public ItemData(String item, int price, String date, int number, int category){
 		this(item, price, date);
 		this.number = number;
 		this.category = category;

@@ -18,7 +18,7 @@
   		android:layout_weight="1"/>
 	<TextView  
   		android:textSize="16sp" 
-  		android:id="@+id/textView3" 
+  		android:id="@+id/textTimes" 
   		android:layout_height="wrap_content" 
   		android:layout_width="0dp"
   		android:layout_weight="1"/>

@@ -1,4 +1,4 @@
-package jp.shimi.saufu;
+package jp.shimi.saihu.dialog;
 
 public interface DialogListener {
 	

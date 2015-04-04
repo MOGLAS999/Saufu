@@ -9,7 +9,7 @@ import android.util.Log;
 public class DateChanger {
 	private SimpleDateFormat df;
 	
-	DateChanger(){
+	public DateChanger(){
 		this.df = new SimpleDateFormat("yyyy/MM/dd");
 	}
 	

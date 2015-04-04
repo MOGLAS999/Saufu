@@ -25,7 +25,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 		db.execSQL("create table item_table(" +
 				"date text not null,"+
 				"name text,"+
-				"price integer"+
+				"price integer,"+
+				"number integer,"+
+				"category integer"+
 				");"
 		);
 	}

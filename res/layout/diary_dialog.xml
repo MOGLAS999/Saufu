@@ -5,21 +5,38 @@
     android:id="@+id/diarydialog_layout"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editDialogDate"
+   <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:focusable="false"
-	    android:clickable="true"
-        android:inputType="date" />
+        android:layout_height="wrap_content" >
+
+       <Button
+           android:id="@+id/categoryButton"
+           style="?android:attr/buttonStyleSmall"
+           android:layout_width="36dp"
+           android:layout_height="match_parent"
+           android:text=""
+           android:layout_margin="2dp"
+           android:background="@drawable/color_select_button" />
+
+        <EditText
+            android:id="@+id/editDialogDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="date" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/editDialogItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/txtItem" >
+        android:hint="@string/txtItem"
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
@@ -33,6 +50,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="40dp"
             android:layout_height="match_parent"
+            android:gravity="left"
             android:text="@string/minus" />
 
         <EditText
@@ -40,17 +58,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
             android:hint="@string/txtPrice"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="9" />
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/yen"
+            android:gravity="right"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/textTimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/times"
+            android:paddingLeft="10dp"
+            android:paddingRight="8dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/editDialogNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/dialog_number"
+            android:inputType="number"
+            android:maxLength="4"
+            android:text="@string/one" />
+
+        <TextView
+            android:id="@+id/textTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="@string/total_price"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/TextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="1"
+            android:text="@string/yen"
+            android:gravity="right"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

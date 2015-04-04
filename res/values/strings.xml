@@ -17,5 +17,9 @@
     <string name="txtPrice">価格</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
+    <string name="dialog_number">個数</string>
+    <string name="total_price">合計価格</string>
+    <string name="one">1</string>
+    <string name="times">×</string>
 
 </resources>
