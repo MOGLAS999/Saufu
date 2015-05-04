@@ -3,10 +3,12 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
+import jp.shimi.saifu.dialog.CalendarDialogFragment;
+import jp.shimi.saifu.dialog.DayDeletedListener;
+import jp.shimi.saifu.dialog.DayItemDeletedListener;
+import jp.shimi.saifu.dialog.EditItemDialog;
+import jp.shimi.saifu.dialog.EditItemDialogFragment;
 import jp.shimi.saifu.setting.Preferences;
-import jp.shimi.saihu.dialog.DayDeletedListener;
-import jp.shimi.saihu.dialog.DayItemDeletedListener;
-import jp.shimi.saihu.dialog.EditItemDialog;
 
 import android.os.Bundle;
 import android.DB.MySQLiteOpenHelper;
@@ -70,6 +72,11 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 			case R.id.action_settings:
 				Intent intent = new Intent(this, Preferences.class);
 				startActivity(intent);
+				return true;
+			case R.id.dayjump_calendar:
+				CalendarDialogFragment newFragment;
+				newFragment = CalendarDialogFragment.newInstance();
+				newFragment.show(getFragmentManager(), "calendar_dialog");
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

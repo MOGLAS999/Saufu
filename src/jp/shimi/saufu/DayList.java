@@ -101,9 +101,9 @@ public class DayList {
 	public int GetDayData(Calendar date){
 		DateChanger dc = new DateChanger();
 		for(int i = 0; i < this.dataList.size(); i++){
-			Log.d("GetDayData", dc.ChangeToString(this.dataList.get(i).GetDate()) +"=?"+ dc.ChangeToString(date));
+			//Log.d("GetDayData", dc.ChangeToString(this.dataList.get(i).GetDate()) +"=?"+ dc.ChangeToString(date));
 			if(dc.ChangeToString(this.dataList.get(i).GetDate()).equals(dc.ChangeToString(date))){
-				Log.d("Check", "if pass");
+				//Log.d("Check", "if pass");
 				return i;
 			}
 		}
@@ -124,7 +124,7 @@ public class DayList {
 	public void AddItemData(Calendar date, ItemData newItem){
 		int pos = GetDayData(date);
 		if(pos < 0){
-			Log.d("AddItemData", "Error pos == "+ pos);
+			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
 		else{
 			this.dataList.get(pos).AddItem(newItem);
@@ -135,7 +135,7 @@ public class DayList {
 	public void AddItemData(ItemData newItem){
 		int pos = GetDayData(newItem.GetDate());
 		if(pos < 0){
-			Log.d("AddItemData", "Error pos == "+ pos);
+			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
 		else{
 			this.dataList.get(pos).AddItem(newItem);
@@ -147,7 +147,7 @@ public class DayList {
 	public void AddItemData(Calendar date, ItemData newItem, int position){
 		int pos = GetDayData(date);
 		if(pos < 0){
-			Log.d("AddItemData", "Error pos == "+ pos);
+			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
 		else{
 			this.dataList.get(pos).AddItem(newItem, position);
@@ -159,7 +159,7 @@ public class DayList {
 	public void SetItemData(Calendar date, ItemData newItem, int itemPos){
 		int pos = GetDayData(date);
 		if(pos < 0){
-			Log.d("AddItemData", "Error pos == "+ pos);
+			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
 		else{
 			this.dataList.get(pos).SetItem(itemPos, newItem);
@@ -171,7 +171,7 @@ public class DayList {
 	public void RemoveItemData(Calendar date, int itemPos){
 		int pos = GetDayData(date);
 		if(pos < 0){
-			Log.d("AddItemData", "Error pos == "+ pos);
+			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
 		else{
 			this.dataList.get(pos).RemoveItem(itemPos);
@@ -182,7 +182,7 @@ public class DayList {
 	// 指定した日付(位置)以降の残金を計算する
 	public void UpdateBalance(int index){
 		if(index < 0){
-			Log.d("UpdateBalance", "error");
+			//Log.d("UpdateBalance", "error");
 		}else{
 			for(int i = index; i < GetListSize(); i++){
 				int balance;

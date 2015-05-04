@@ -3,17 +3,18 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
+import jp.shimi.saifu.dialog.DialogListener;
+import jp.shimi.saifu.dialog.EditItemDialog;
+import jp.shimi.saifu.dialog.ItemMenuDialogFragment;
+import jp.shimi.saifu.dialog.ItemRemoveListener;
+import jp.shimi.saifu.dialog.MenuListener;
 import jp.shimi.saifu.setting.Preferences;
-import jp.shimi.saihu.dialog.DialogListener;
-import jp.shimi.saihu.dialog.EditItemDialog;
-import jp.shimi.saihu.dialog.ItemMenuDialogFragment;
-import jp.shimi.saihu.dialog.ItemRemoveListener;
-import jp.shimi.saihu.dialog.MenuListener;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -61,8 +62,13 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     		holder.textItem.setText(item.GetItem());  
     		
     		String sign = "";
-    		if(item.GetPrice() > 0) sign = "+";
+    		int priceColor = context.getResources().getColor(R.color.minus);
+    		if(item.GetPrice() > 0){
+    			sign = "+";
+    			priceColor = context.getResources().getColor(R.color.plus);
+    		}
     		holder.textPrice.setText(sign + Integer.toString(item.GetPrice()) + "円");
+    		holder.textPrice.setTextColor(priceColor);
     		
     		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
     		

@@ -3,12 +3,12 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
-import jp.shimi.saihu.dialog.DayDeletedListener;
-import jp.shimi.saihu.dialog.DayItemDeletedListener;
-import jp.shimi.saihu.dialog.DayMenuDialogFragment;
-import jp.shimi.saihu.dialog.EditItemDialog;
-import jp.shimi.saihu.dialog.ItemRemoveListener;
-import jp.shimi.saihu.dialog.MenuListener;
+import jp.shimi.saifu.dialog.DayDeletedListener;
+import jp.shimi.saifu.dialog.DayItemDeletedListener;
+import jp.shimi.saifu.dialog.DayMenuDialogFragment;
+import jp.shimi.saifu.dialog.EditItemDialog;
+import jp.shimi.saifu.dialog.ItemRemoveListener;
+import jp.shimi.saifu.dialog.MenuListener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -75,8 +75,13 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
     		holder.textBalance.setText("残金    " + day.GetStringBalance() + " 円");
     		
     		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-    		holder.textDate.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
-    		holder.textBalance.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		int textSize = Integer.parseInt(pref.getString("char_size", "16"));
+    		holder.textDate.setTextSize(textSize);
+    		if(position == getCount() - 1){
+    			holder.textBalance.setTextSize(textSize*(float)1.3);
+    		}else{
+    			holder.textBalance.setTextSize(textSize);
+    		}
     		    	
     		ItemAdapter adapter = new ItemAdapter(context, 0, day.GetItemList());
     		adapter.setItemRemoveListener(DayAdapter.this);

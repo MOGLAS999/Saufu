@@ -3,6 +3,7 @@
 
     <string name="app_name">Saufu</string>
     <string name="action_settings">設定</string>
+    <string name="dayjump">選んだ日付まで移動</string>
     <string name="hello_world">Hello world!</string>
     <string name="yen">円</string>
     <string name="save">記録</string>

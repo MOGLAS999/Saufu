@@ -5,4 +5,18 @@
     
     <color name="list_background_second_unpressed">#E6E6E6</color>
     <color name="list_background_second_pressed">#A9F5BC</color>
+    
+    <color name="plus">#0000FF</color>
+    <color name="minus">#FF0000</color> 
+    
+    <color name="category_0">#FFFFFF</color> <!-- 白 -->
+    <color name="category_1">#FA5858</color> <!-- 赤 -->
+    <color name="category_2">#FAAC58</color> <!-- 橙 -->
+    <color name="category_3">#F7FE2E</color> <!-- 黄 -->
+    <color name="category_4">#9AFE2E</color> <!-- 黄緑 -->
+    <color name="category_5">#01DF01</color> <!-- 緑 -->
+    <color name="category_6">#58FAF4</color> <!-- 水色 -->
+    <color name="category_7">#5882FA</color> <!-- 青 -->
+    <color name="category_8">#D358F7</color> <!-- 紫 -->
+    <color name="category_9">#585858</color> <!-- 黒 -->
 </resources>

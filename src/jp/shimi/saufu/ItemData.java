@@ -22,9 +22,12 @@ public class ItemData{
 		this.dc = new DateChanger();
 	}
 	
-	public ItemData(String item, int price, String date){
+	public ItemData(String item, int price, String date, int number, int category){
 		this.item = item;
 		this.price = price;
+		this.number = number;
+		this.category = category;
+		
 		this.dc = new DateChanger();
 		this.date = Calendar.getInstance();
 		if(dc.ChangeToDate(date) == null){
@@ -33,12 +36,7 @@ public class ItemData{
 		else{
 			this.date.setTime(dc.ChangeToDate(date));
 		}
-	}
-	
-	public ItemData(String item, int price, String date, int number, int category){
-		this(item, price, date);
-		this.number = number;
-		this.category = category;
+		
 	}
 	
 	public String GetItem(){
