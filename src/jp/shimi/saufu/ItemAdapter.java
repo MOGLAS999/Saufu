@@ -61,6 +61,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	if(item != null){	    	
     		holder.textItem.setText(item.GetItem());  
     		
+    		// 符号（プラスマイナス）を付ける
     		String sign = "";
     		int priceColor = context.getResources().getColor(R.color.minus);
     		if(item.GetPrice() > 0){
@@ -70,15 +71,18 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     		holder.textPrice.setText(sign + Integer.toString(item.GetPrice()) + "円");
     		holder.textPrice.setTextColor(priceColor);
     		
+    		// 文字サイズの設定
     		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+    	    String initFontSize = context.getResources().getString(R.string.initial_font_size);
     		
     		ViewGroup.LayoutParams params = holder.btnCategory.getLayoutParams();
-    		params.width = (int) convertDpToPixel(Float.parseFloat(pref.getString("char_size", "16")), context);
+    		params.width = (int) convertDpToPixel(Float.parseFloat(
+    				pref.getString("char_size", initFontSize)), context);
     	    params.height = params.width;
     	    holder.btnCategory.setLayoutParams(params);
     		
-    		holder.textItem.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
-    		holder.textPrice.setTextSize(Integer.parseInt(pref.getString("char_size", "16")));
+    		holder.textItem.setTextSize(Integer.parseInt(pref.getString("char_size", initFontSize)));
+    		holder.textPrice.setTextSize(Integer.parseInt(pref.getString("char_size", initFontSize)));
     		
     		// 背景色を交互に変更
 			if(position % 2 == 0){

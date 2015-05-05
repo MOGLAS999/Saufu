@@ -181,16 +181,10 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 	    this.DIDListener = null;
 	}
 	
-	/**
-	 * リスナーを追加
-	 */
 	public void setDayDeletedListener(DayDeletedListener listener){
 	    this.DDListener = listener;
 	}
-	    
-	/**
-	 * リスナー削除
-	 */
+
 	public void removeDayDeletedListener(){
 	    this.DDListener = null;
 	}

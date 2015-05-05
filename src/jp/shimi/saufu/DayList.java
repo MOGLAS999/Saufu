@@ -79,7 +79,7 @@ public class DayList {
 	}
 	
 	public DayData GetData(Calendar date){
-		int pos = GetDayData(date);
+		int pos = GetDataPositionByDate(date);
 		if(pos == -1){
 			return null;
 		}else{
@@ -98,7 +98,7 @@ public class DayList {
 	}
 	
 	// 指定した日付のデータの位置を返す
-	public int GetDayData(Calendar date){
+	public int GetDataPositionByDate(Calendar date){
 		DateChanger dc = new DateChanger();
 		for(int i = 0; i < this.dataList.size(); i++){
 			//Log.d("GetDayData", dc.ChangeToString(this.dataList.get(i).GetDate()) +"=?"+ dc.ChangeToString(date));
@@ -122,7 +122,7 @@ public class DayList {
 	
 	// 指定した日にアイテムデータを追加する
 	public void AddItemData(Calendar date, ItemData newItem){
-		int pos = GetDayData(date);
+		int pos = GetDataPositionByDate(date);
 		if(pos < 0){
 			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
@@ -133,7 +133,7 @@ public class DayList {
 	}
 	
 	public void AddItemData(ItemData newItem){
-		int pos = GetDayData(newItem.GetDate());
+		int pos = GetDataPositionByDate(newItem.GetDate());
 		if(pos < 0){
 			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
@@ -145,7 +145,7 @@ public class DayList {
 	
 	// 指定した日の指定した位置にアイテムデータを追加する
 	public void AddItemData(Calendar date, ItemData newItem, int position){
-		int pos = GetDayData(date);
+		int pos = GetDataPositionByDate(date);
 		if(pos < 0){
 			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
@@ -157,7 +157,7 @@ public class DayList {
 	
 	// 指定した日にアイテムデータを上書きする
 	public void SetItemData(Calendar date, ItemData newItem, int itemPos){
-		int pos = GetDayData(date);
+		int pos = GetDataPositionByDate(date);
 		if(pos < 0){
 			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
@@ -169,7 +169,7 @@ public class DayList {
 	
 	// 指定した日の指定した位置のアイテムデータを削除する
 	public void RemoveItemData(Calendar date, int itemPos){
-		int pos = GetDayData(date);
+		int pos = GetDataPositionByDate(date);
 		if(pos < 0){
 			//Log.d("AddItemData", "Error pos == "+ pos);
 		}
@@ -197,7 +197,7 @@ public class DayList {
 	}
 	
 	public void UpdateBalance(Calendar changedDate){
-		UpdateBalance(GetDayData(changedDate));
+		UpdateBalance(GetDataPositionByDate(changedDate));
 	}
 	
 	// データのアイテムリストのサイズを確認し、サイズが0なら削除してそれ以降を再計算する
@@ -225,6 +225,22 @@ public class DayList {
 			}
 			else if(d1.GetDate().before(date) && d2.GetDate().after(date)){
 				return d2.GetDate();
+			}
+		}
+		return GetData(GetListSize()-1).GetDate();
+	}
+	
+	// 指定した日付の前の日付を返す
+	public Calendar GetBeforeDate(Calendar date){
+		for(int i = 1; i < GetListSize(); i++){
+			DayData d1 = GetData(i-1);
+			DayData d2 = GetData(i);
+				
+			if(d2.GetDate().equals(date)){
+				return d1.GetDate();
+			}
+			else if(d1.GetDate().before(date) && d2.GetDate().after(date)){
+				return d1.GetDate();
 			}
 		}
 		return GetData(GetListSize()-1).GetDate();

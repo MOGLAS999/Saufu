@@ -34,7 +34,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public class Diary extends FragmentActivity implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
+public class Diary extends FragmentActivity 
+implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
 	private Button button1;
 	private ListView listView;
 	private DayList lDay = new DayList();
@@ -87,12 +88,7 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 	public void onResume(){
 		super.onResume();
 	
-		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
-		adapter.setDayDeletedListener(this);
-		adapter.setDayItemDeletedListener(this);
-		listView.setAdapter(adapter);
-		
-		listView.setSelection(lDay.GetListSize());
+		UpdateListViewAndScroll(lDay.GetListSize() - 1);
 	}
 	
 	@Override
@@ -102,14 +98,32 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 		dialog.CreateDialog();
 	}	
 	
+	//　listViewの表示をlDayの状態と同期し、positionの位置までスクロールする
+	private void UpdateListViewAndScroll(int position){
+		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
+		adapter.setDayDeletedListener(this);
+		adapter.setDayItemDeletedListener(this);
+		listView.setAdapter(adapter);
+			
+		if(position > listView.getCount() - 1){
+			listView.setSelection(listView.getCount() - 1);
+		}
+		else if(position < 0){
+			listView.setSelection(0);
+		}
+		else{
+			listView.setSelection(position);
+		}
+	}
+	
 	/**
 	 * EditItemDialogで返される値を受け取る
-	 * @param itemData
-	 * @param initDate
-	 * @param editPosition
+	 * @param itemData 変更後のデータ
+	 * @param initDate 変更前の日付
+	 * @param editPosition 
 	 */
 	public void onReturnValue(ItemData itemData, Calendar initDate, int editPosition){
-		int d = lDay.GetDayData(itemData.GetDate());
+		int d = lDay.GetDataPositionByDate(itemData.GetDate());
 		if(d < 0){ 
 			lDay.AddDataByDate(new DayData(itemData.GetDate(), 0));
 		}
@@ -131,10 +145,8 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 			lDay.AddItemData(itemData.GetDate(), itemData);
 		}
 	
-		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
-		adapter.setDayDeletedListener(this);
-		adapter.setDayItemDeletedListener(this);
-		listView.setAdapter(adapter); 
+		// 項目が編集された日にスクロールする
+		UpdateListViewAndScroll(lDay.GetDataPositionByDate(itemData.GetDate()));
 		
 		SaveDayDataToDB();
 		SaveItemDataToDB();
@@ -144,10 +156,8 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 	public void DayDeleted(Calendar deletedDate) {
 		lDay.UpdateBalance(lDay.GetNextDate(deletedDate));
 		
-		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
-		adapter.setDayDeletedListener(this);
-		adapter.setDayItemDeletedListener(this);
-		listView.setAdapter(adapter);
+		//　削除された日の前日にスクロールする
+		UpdateListViewAndScroll(lDay.GetDataPositionByDate(lDay.GetBeforeDate(deletedDate)));
 		
 		SaveDayDataToDB();
 		SaveItemDataToDB();
@@ -157,9 +167,16 @@ public class Diary extends FragmentActivity implements OnClickListener, DayDelet
 	public void DayItemDeleted(Calendar deletedDate) {
 		lDay.CheckItemListSize();
 		lDay.UpdateBalance(deletedDate);
-		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
-		adapter.setDayItemDeletedListener(this);
-		listView.setAdapter(adapter);
+
+		int position = lDay.GetDataPositionByDate(deletedDate);
+		if(position == -1){
+			//　削除された日の前日にスクロールする
+			UpdateListViewAndScroll(lDay.GetDataPositionByDate(lDay.GetBeforeDate(deletedDate)));
+		}
+		else{
+			// 削除された日にスクロールする
+			UpdateListViewAndScroll(position);
+		}
 		
 		SaveDayDataToDB();
 		SaveItemDataToDB();

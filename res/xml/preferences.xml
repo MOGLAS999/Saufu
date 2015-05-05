@@ -5,12 +5,13 @@
         android:title="設定">
         <EditTextPreference
             android:key="char_size"
-            android:title="文字の大きさ"
-            android:summary="初期値16"
-            android:dialogTitle="文字の大きさの変更"
-            android:defaultValue="16"
+            android:title="フォントサイズ"
+            android:summary="文字の大きさ"
+            android:dialogTitle="フォントサイズの変更"
+            android:defaultValue="@string/initial_font_size"
             android:inputType="number" />
         
+        <!--
         <EditTextPreference
             android:key="days_number_in_screen"
             android:title="同時表示日数"
@@ -18,5 +19,6 @@
             android:dialogTitle="同時表示日数の変更"
             android:defaultValue="20"
             android:inputType="number" />
+        -->
     </PreferenceCategory>
 </PreferenceScreen>

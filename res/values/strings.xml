@@ -22,5 +22,6 @@
     <string name="total_price">合計価格</string>
     <string name="one">1</string>
     <string name="times">×</string>
+    <string name="initial_font_size">18</string>
 
 </resources>
