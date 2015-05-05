@@ -189,7 +189,7 @@ public class DayList {
 				if(i == 0) balance = 0;
 				else balance = GetData(i-1).GetBalance();
 				for(int j = 0; j < GetData(i).GetItemList().size(); j++){
-					balance += GetData(i).GetItemList().get(j).GetPrice();
+					balance += GetData(i).GetItemList().get(j).GetTotalPrice();
 				}
 				GetData(i).SetBalance(balance);
 			}

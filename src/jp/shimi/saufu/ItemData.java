@@ -59,6 +59,10 @@ public class ItemData{
 		return this.number;
 	}
 	
+	public int GetTotalPrice(){
+		return this.price * this.number;
+	}
+	
 	public int GetCategory(){
 		return this.category;
 	}

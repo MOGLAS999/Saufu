@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,8 +59,17 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	}
     	
     	final ItemData item = (ItemData)getItem(position);
-    	if(item != null){	    	
-    		holder.textItem.setText(item.GetItem());  
+    	if(item != null){
+    		// 項目名のセット
+    		if(item.GetNumber() > 1){ // 複数個の場合は個数表示を末尾に追加
+    			String strColor = context.getResources().getString(R.string.item_number_color);
+    			String strNum = Integer.toString(item.GetNumber());
+    			String strHtml = "<font color=" +strColor+ "> ×" +strNum+ "</font>";
+    			holder.textItem.setText(Html.fromHtml(item.GetItem() + strHtml));
+    		}
+    		else{
+    			holder.textItem.setText(item.GetItem()); 
+    		}
     		
     		// 符号（プラスマイナス）を付ける
     		String sign = "";
@@ -68,7 +78,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     			sign = "+";
     			priceColor = context.getResources().getColor(R.color.plus);
     		}
-    		holder.textPrice.setText(sign + Integer.toString(item.GetPrice()) + "円");
+    		holder.textPrice.setText(sign + Integer.toString(item.GetTotalPrice()) + "円");
     		holder.textPrice.setTextColor(priceColor);
     		
     		// 文字サイズの設定

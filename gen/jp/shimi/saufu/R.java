@@ -53,8 +53,8 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f060000;
-        public static final int activity_vertical_margin=0x7f060001;
+        public static final int activity_horizontal_margin=0x7f070000;
+        public static final int activity_vertical_margin=0x7f070001;
     }
     public static final class drawable {
         public static final int color_select_button=0x7f020000;
@@ -112,28 +112,31 @@ public final class R {
         public static final int main=0x7f090001;
     }
     public static final class string {
-        public static final int action_settings=0x7f070001;
-        public static final int addString=0x7f07000a;
-        public static final int app_name=0x7f070000;
-        public static final int dayjump=0x7f070002;
-        public static final int dialog_number=0x7f070011;
-        public static final int hello_world=0x7f070003;
-        public static final int initial_font_size=0x7f070015;
-        public static final int item=0x7f070006;
-        public static final int minus=0x7f070010;
-        public static final int one=0x7f070013;
-        public static final int plus=0x7f07000f;
-        public static final int printItem=0x7f070007;
-        public static final int printPrice=0x7f070009;
-        public static final int printYen=0x7f070008;
-        public static final int save=0x7f070005;
-        public static final int times=0x7f070014;
-        public static final int title_activity_diary=0x7f07000b;
-        public static final int title_activity_preferences=0x7f07000c;
-        public static final int total_price=0x7f070012;
-        public static final int txtItem=0x7f07000d;
-        public static final int txtPrice=0x7f07000e;
-        public static final int yen=0x7f070004;
+        public static final int action_settings=0x7f060002;
+        public static final int addString=0x7f06000b;
+        public static final int app_name=0x7f060001;
+        public static final int dayjump=0x7f060003;
+        public static final int dialog_number=0x7f060012;
+        public static final int hello_world=0x7f060004;
+        public static final int initial_font_size=0x7f060016;
+        public static final int item=0x7f060007;
+        /**  黒 
+         */
+        public static final int item_number_color=0x7f060000;
+        public static final int minus=0x7f060011;
+        public static final int one=0x7f060014;
+        public static final int plus=0x7f060010;
+        public static final int printItem=0x7f060008;
+        public static final int printPrice=0x7f06000a;
+        public static final int printYen=0x7f060009;
+        public static final int save=0x7f060006;
+        public static final int times=0x7f060015;
+        public static final int title_activity_diary=0x7f06000c;
+        public static final int title_activity_preferences=0x7f06000d;
+        public static final int total_price=0x7f060013;
+        public static final int txtItem=0x7f06000e;
+        public static final int txtPrice=0x7f06000f;
+        public static final int yen=0x7f060005;
     }
     public static final class style {
         /** 

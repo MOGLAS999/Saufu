@@ -19,4 +19,6 @@
     <color name="category_7">#5882FA</color> <!-- 青 -->
     <color name="category_8">#D358F7</color> <!-- 紫 -->
     <color name="category_9">#585858</color> <!-- 黒 -->
+    
+    <string name="item_number_color">#088A68</string> <!-- 文字列で呼び出すのでstring -->
 </resources>
