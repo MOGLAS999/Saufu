@@ -3,6 +3,7 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
+import jp.shimi.saifu.dialog.CheckDialogFragment;
 import jp.shimi.saifu.dialog.DayDeletedListener;
 import jp.shimi.saifu.dialog.DayItemDeletedListener;
 import jp.shimi.saifu.dialog.DayMenuDialogFragment;
@@ -94,7 +95,8 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
     	return convertView;
     }
     
-    private class DayMenuDialog implements MenuListener{
+    private class DayMenuDialog implements MenuListener, 
+    CheckDialogFragment.ClickedPositiveButtonListener{
     	DayData day;
     	int position;
     	
@@ -120,10 +122,19 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 
     	@Override
     	public void doSecondClick() {
-    		Calendar cal = day.GetDate();
-    		remove(day);   
-    		DDListener.DayDeleted(cal);    		
+    		//　削除確認ダイアログを表示
+    		CheckDialogFragment newFragment;
+    		newFragment = CheckDialogFragment.newInstance("警告", day.GetStringDate()+"を削除しますか？");
+    		newFragment.setClickedPositiveButtonListener(DayMenuDialog.this);
+    		newFragment.show(((Activity)context).getFragmentManager(), "check_day_delete_dialog");
     	}
+
+		@Override
+		public void ClickedPositiveButton() {
+			Calendar cal = day.GetDate();
+    		remove(day);   
+    		DDListener.DayDeleted(cal); 
+		}
     }
     
     /**

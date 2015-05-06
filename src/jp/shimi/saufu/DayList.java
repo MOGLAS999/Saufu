@@ -243,7 +243,7 @@ public class DayList {
 				return d1.GetDate();
 			}
 		}
-		return GetData(GetListSize()-1).GetDate();
+		return GetData(0).GetDate();
 	}
 	
 }

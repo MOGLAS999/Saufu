@@ -3,6 +3,7 @@ package jp.shimi.saufu;
 import java.util.Calendar;
 import java.util.List;
 
+import jp.shimi.saifu.dialog.CheckDialogFragment;
 import jp.shimi.saifu.dialog.DialogListener;
 import jp.shimi.saifu.dialog.EditItemDialog;
 import jp.shimi.saifu.dialog.ItemMenuDialogFragment;
@@ -112,10 +113,10 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	return convertView;
     }
 
-    private class ItemMenuDialog implements MenuListener{
+    private class ItemMenuDialog implements MenuListener, 
+    CheckDialogFragment.ClickedPositiveButtonListener{
     	ItemData item;
     	int position;
-    	
     	
     	ItemMenuDialog(ItemData item, int position){
     		this.item = item;
@@ -147,10 +148,19 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	 */
     	@Override
     	public void doSecondClick() {
+    		//　削除確認ダイアログを表示
+    		CheckDialogFragment newFragment;
+    		newFragment = CheckDialogFragment.newInstance("警告", item.GetItem()+"を削除しますか？");
+    		newFragment.setClickedPositiveButtonListener(ItemMenuDialog.this);
+    		newFragment.show(((Activity)context).getFragmentManager(), "check_item_delete_dialog");
+    	}
+    	
+    	@Override
+		public void ClickedPositiveButton() {
     		Calendar c = item.GetDate();
     		remove(item);
     		itemRemoveListener.removeItem(c);
-    	}
+		}
     	
     	private class EditItemDialogListener implements DialogListener{
 
