@@ -17,6 +17,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -189,51 +190,83 @@ public class EditItemDialogFragment extends DialogFragment{
         		}
         	}
         });
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-        	@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// 押された時の処理
-            	EditText etxtItem   = (EditText)layout.findViewById(R.id.editDialogItem);
-            	EditText etxtPrice  = (EditText)layout.findViewById(R.id.editDialogPrice);
-            	EditText etxtNumber = (EditText)layout.findViewById(R.id.editDialogNumber);
-            	
-            	if(!etxtItem.getText().toString().equals("") &&
-            			!etxtPrice.getText().toString().equals("")){
-            		// 入力内容を取得
-            		String strItem   = etxtItem.getText().toString();
-            		String strPrice  = etxtPrice.getText().toString();
-            		String strNumber = etxtNumber.getText().toString();
-		    	
-            		// 数値に変換
-            		int price = Integer.parseInt(strPrice);
-            		int number = Integer.parseInt(strNumber);
-            		if((String)plusMinusButton.getText() == getResources().getString(R.string.minus)){
-            			price *= (-1);
-            		}
-            		
-            		// 項目を元のアクティビティに返す
-            		ItemData itemData = new ItemData(strItem, price, editDate.getText().toString(),
-            				number, 0);
-            		Diary callingActivity = (Diary)getActivity();
-            		// 何故かinitDateがdateEdit.getText().toString()に置き換わっているので新しく取り直す
-            		Calendar initDate = Calendar.getInstance();
-            		initDate.setTime(dc.ChangeToDate(getArguments().getString("init_date"))); 
-            		callingActivity.onReturnValue(itemData, initDate, editPosition);  
-            	}
-            	            	           	
-            	listener.doPositiveClick();
-            	dismiss();
-			}
-		});
+        builder.setPositiveButton("OK", null);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         	@Override
 			public void onClick(DialogInterface dialog, int which) {
 				listener.doNegativeClick();
-				dismiss();
 			}
 		});
         
-	    return builder.create();
+        final AlertDialog alertDialog = builder.create();
+        
+        alertDialog.setOnShowListener(new OnShowListener(){
+			@Override
+			public void onShow(DialogInterface dialog) {
+				// ポジティブボタンの動作処理
+				Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+				positiveButton.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+		            	EditText etxtItem   = (EditText)layout.findViewById(R.id.editDialogItem);
+		            	EditText etxtPrice  = (EditText)layout.findViewById(R.id.editDialogPrice);
+		            	EditText etxtNumber = (EditText)layout.findViewById(R.id.editDialogNumber);
+		            	
+		            	String errorMessage = "";
+		            	if(etxtItem.getText().toString().equals("")){
+		            		errorMessage += "項目名を入力してください。";
+		            	}
+		            	if(etxtPrice.getText().toString().equals("")){
+		            		if(!errorMessage.equals("")) errorMessage += "\n";
+		            		errorMessage += "価格を入力してください。";
+		            	}
+		            	if(etxtNumber.getText().toString().equals("")){
+		            		if(!errorMessage.equals("")) errorMessage += "\n";
+		            		errorMessage += "個数を入力してください。";
+		            	}
+		            	else if(Integer.parseInt(etxtNumber.getText().toString()) <= 0 ||
+		            			Integer.parseInt(etxtNumber.getText().toString()) > 9999){
+		            		if(!errorMessage.equals("")) errorMessage += "\n";
+		            		errorMessage += "個数は1~9999までが有効です。";
+		            	}
+		            	
+		            	//　エラーがある場合は警告ダイアログを表示
+		            	if(!errorMessage.equals("")){
+		            		SimpleMessageDialogFragment newFragment;
+		            		newFragment = SimpleMessageDialogFragment.newInstance("警告", errorMessage);
+		            		newFragment.show(getActivity().getFragmentManager(), "caution_dialog");
+		            	}
+		            	else{
+		            		// 入力内容を取得
+		            		String strItem   = etxtItem.getText().toString();
+		            		String strPrice  = etxtPrice.getText().toString();
+		            		String strNumber = etxtNumber.getText().toString();
+				    	
+		            		// 数値に変換
+		            		int price = Integer.parseInt(strPrice);
+		            		int number = Integer.parseInt(strNumber);
+		            		if((String)plusMinusButton.getText() == getResources().getString(R.string.minus)){
+		            			price *= (-1);
+		            		}
+		            		
+		            		// 項目を元のアクティビティに返す
+		            		ItemData itemData = new ItemData(strItem, price, editDate.getText().toString(),
+		            				number, 0);
+		            		Diary callingActivity = (Diary)getActivity();
+		            		// 何故かinitDateがdateEdit.getText().toString()に置き換わっているので新しく取り直す
+		            		Calendar initDate = Calendar.getInstance();
+		            		initDate.setTime(dc.ChangeToDate(getArguments().getString("init_date"))); 
+		            		callingActivity.onReturnValue(itemData, initDate, editPosition);  
+		            		
+		            		listener.doPositiveClick();
+			            	alertDialog.dismiss(); // ダイアログを閉じる
+		            	}  	            	           
+					}
+				});
+			}
+        });
+        
+	    return alertDialog;
 	}
 	
 	/**
