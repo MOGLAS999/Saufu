@@ -1,6 +1,7 @@
 package jp.shimi.saufu;
 
 import java.util.Calendar;
+import java.util.EventListener;
 import java.util.List;
 
 import jp.shimi.saifu.dialog.CheckDialogFragment;
@@ -19,6 +20,7 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
 	private LayoutInflater inflater;
 	private Context context;
 	private ItemRemoveListener itemRemoveListener = null;
+	private MoveItemListener moveItemListener = null;
 	private class ViewHolder{
 		Button btnCategory;
 		TextView textItem;
@@ -105,7 +108,7 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	
     	convertView.setOnClickListener(new View.OnClickListener() {
     		public void onClick(View view){            			
-    			ItemMenuDialog dialog = new ItemMenuDialog(item, position);
+    			ItemMenuDialog dialog = new ItemMenuDialog(item, position, getCount());
     			dialog.CreateDialog();
     		}
 		});
@@ -113,47 +116,59 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     	return convertView;
     }
 
-    private class ItemMenuDialog implements MenuListener, 
+    public interface MoveItemListener extends EventListener{
+		public void upItem(ItemData item, int itemPosition);
+		public void downItem(ItemData item, int itemPosition);
+	}
+    
+    private class ItemMenuDialog implements ItemMenuDialogFragment.ClickedMenuListener, 
     CheckDialogFragment.ClickedPositiveButtonListener{
     	ItemData item;
     	int position;
+    	int dayListSize;
     	
-    	ItemMenuDialog(ItemData item, int position){
+    	ItemMenuDialog(ItemData item, int position, int dayListSize){
     		this.item = item;
     		this.position = position;
+    		this.dayListSize = dayListSize;
     	}
     	
     	public void CreateDialog(){
+    		boolean upIsPossible = dayListSize > 1 && position > 0;
+    		boolean downIsPossible = dayListSize > 1 && position < dayListSize - 1;
+    		
     		// 編集・削除ダイアログを生成        			       			
 			ItemMenuDialogFragment newFragment = 
-					ItemMenuDialogFragment.newInstance(item.GetItem());
-			newFragment.setDialogListener(ItemMenuDialog.this);
-			//newFragment.setCancelable(false);
+					ItemMenuDialogFragment.newInstance(item.GetItem(), upIsPossible, downIsPossible);
+			newFragment.setClickedMenuListener(ItemMenuDialog.this);
 			newFragment.show(((Activity)context).getFragmentManager(), "item_menu_dialog");
     	}
     	
-    	/**
-    	 * 編集
-    	 */
     	@Override
-    	public void doFitstClick() {
+		public void doEditClick() {
     		EditItemDialog dialog = new EditItemDialog(context ,item, position);
     		EditItemDialogListener listener = new EditItemDialogListener();
     		dialog.CreateDialog(listener);
-    		//remove(item);
-    	}
+		}
 
-    	/**
-    	 * 削除
-    	 */
-    	@Override
-    	public void doSecondClick() {
-    		//　削除確認ダイアログを表示
+		@Override
+		public void doDeleteClick() {
+			//　削除確認ダイアログを表示
     		CheckDialogFragment newFragment;
     		newFragment = CheckDialogFragment.newInstance("警告", item.GetItem()+"を削除しますか？");
     		newFragment.setClickedPositiveButtonListener(ItemMenuDialog.this);
     		newFragment.show(((Activity)context).getFragmentManager(), "check_item_delete_dialog");
-    	}
+		}
+
+		@Override
+		public void doUpClick() {
+			moveItemListener.upItem(item, position);
+		}
+
+		@Override
+		public void doDownClick() {
+			moveItemListener.downItem(item, position);
+		}
     	
     	@Override
 		public void ClickedPositiveButton() {
@@ -176,9 +191,17 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
 				// TODO 自動生成されたメソッド・スタブ
 			}
     	}
-
     }
 
+    public void setMoveItemListener(MoveItemListener listener){
+	    this.moveItemListener = listener;
+	}
+
+	public void removeMoveItemListener(){
+	    this.moveItemListener = null;
+	}
+
+    
     /**
 	 * リスナーを追加
 	 */

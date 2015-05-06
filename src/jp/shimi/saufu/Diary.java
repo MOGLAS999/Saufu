@@ -35,7 +35,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 public class Diary extends FragmentActivity 
-implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
+implements OnClickListener, DayDeletedListener, DayItemDeletedListener,
+ItemAdapter.MoveItemListener{
 	private Button button1;
 	private ListView listView;
 	private DayList lDay = new DayList();
@@ -98,12 +99,17 @@ implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
 		dialog.CreateDialog();
 	}	
 	
-	//　listViewの表示をlDayの状態と同期し、positionの位置までスクロールする
-	private void UpdateListViewAndScroll(int position){
+	private void UpdateListView(){
 		DayAdapter adapter = new DayAdapter(Diary.this, 0, lDay.GetList());
 		adapter.setDayDeletedListener(this);
 		adapter.setDayItemDeletedListener(this);
+		adapter.setMoveItemListener(this);
 		listView.setAdapter(adapter);
+	}
+	
+	//　listViewの表示をlDayの状態と同期し、positionの項目までスクロールする
+	private void UpdateListViewAndScroll(int position){
+		UpdateListView();
 			
 		if(position > listView.getCount() - 1){
 			listView.setSelection(listView.getCount() - 1);
@@ -114,6 +120,16 @@ implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
 		else{
 			listView.setSelection(position);
 		}
+	}
+	
+	//　listViewの表示をlDayの状態と同期し、保持していた元の位置までスクロールする
+	private void UpdateListViewWithNoScroll(){
+		int position = listView.getFirstVisiblePosition();
+		int yOffset = listView.getChildAt(0).getTop();
+		
+		UpdateListView();
+		
+		listView.setSelectionFromTop(position, yOffset);
 	}
 	
 	/**
@@ -168,7 +184,7 @@ implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
 		lDay.CheckItemListSize();
 		lDay.UpdateBalance(deletedDate);
 
-		int position = lDay.GetDataPositionByDate(deletedDate);
+		/*int position = lDay.GetDataPositionByDate(deletedDate);
 		if(position == -1){
 			//　削除された日の前日にスクロールする
 			UpdateListViewAndScroll(lDay.GetDataPositionByDate(lDay.GetBeforeDate(deletedDate)));
@@ -176,10 +192,23 @@ implements OnClickListener, DayDeletedListener, DayItemDeletedListener{
 		else{
 			// 削除された日にスクロールする
 			UpdateListViewAndScroll(position);
-		}
+		}*/
+		UpdateListViewWithNoScroll();
 		
 		SaveDayDataToDB();
 		SaveItemDataToDB();
+	}
+	
+	@Override
+	public void upItem(ItemData item, int itemPosition) {
+		lDay.GetData(item.GetDate()).UpItemPosition(itemPosition);
+		UpdateListViewWithNoScroll();
+	}
+
+	@Override
+	public void downItem(ItemData item, int itemPosition) {
+		lDay.GetData(item.GetDate()).DownItemPosition(itemPosition);
+		UpdateListViewWithNoScroll();
 	}
 	
 	public void LoadDayDataFromDB(){

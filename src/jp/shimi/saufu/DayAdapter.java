@@ -10,6 +10,7 @@ import jp.shimi.saifu.dialog.DayMenuDialogFragment;
 import jp.shimi.saifu.dialog.EditItemDialog;
 import jp.shimi.saifu.dialog.ItemRemoveListener;
 import jp.shimi.saifu.dialog.MenuListener;
+import jp.shimi.saufu.ItemAdapter.MoveItemListener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,11 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListener{		
+public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListener, 
+ItemAdapter.MoveItemListener{		
 	private LayoutInflater inflater;
 	private Context context;
 	private DayItemDeletedListener DIDListener = null;
 	private DayDeletedListener DDListener = null;
+	private ItemAdapter.MoveItemListener moveItemListener = null;
 	
 	private class ViewHolder{
 		TextView textDate;
@@ -86,6 +89,7 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
     		    	
     		ItemAdapter adapter = new ItemAdapter(context, 0, day.GetItemList());
     		adapter.setItemRemoveListener(DayAdapter.this);
+    		adapter.setMoveItemListener(DayAdapter.this);
     		
     		holder.listItem.removeAllViews();
     		for(int i = 0; i < adapter.getCount(); i++){		
@@ -198,5 +202,23 @@ public class DayAdapter extends ArrayAdapter<DayData> implements ItemRemoveListe
 
 	public void removeDayDeletedListener(){
 	    this.DDListener = null;
+	}
+	
+	public void setMoveItemListener(MoveItemListener listener){
+	    this.moveItemListener = listener;
+	}
+
+	public void removeMoveItemListener(){
+	    this.moveItemListener = null;
+	}
+
+	@Override
+	public void upItem(ItemData item, int itemPosition) {
+		moveItemListener.upItem(item, itemPosition);		
+	}
+
+	@Override
+	public void downItem(ItemData item, int itemPosition) {
+		moveItemListener.downItem(item, itemPosition);		
 	}
 }

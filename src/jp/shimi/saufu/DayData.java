@@ -88,6 +88,24 @@ public class DayData{
 		}
 		return dif;
 	}
+	
+	public void ExchangeItemPosition(int pos1, int pos2){
+		ItemData tmp = this.itemList.get(pos1);
+		this.itemList.set(pos1, this.itemList.get(pos2));
+		this.itemList.set(pos2, tmp);
+	}
+	
+	public void UpItemPosition(int position){
+		if(this.itemList.size() > 1 && position > 0){
+			ExchangeItemPosition(position, position - 1);
+		}
+	}
+	
+	public void DownItemPosition(int position){
+		if(this.itemList.size() > 1 && position < this.itemList.size() - 1){
+			ExchangeItemPosition(position, position + 1);
+		}
+	}
 		
 	public void ShowListLog(){
 		for(int i = 0; i < this.itemList.size(); i++){
