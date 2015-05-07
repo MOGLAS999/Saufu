@@ -15,9 +15,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +34,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class EditItemDialogFragment extends DialogFragment{
+public class EditItemDialogFragment extends DialogFragment 
+implements SelectCategoryDialogFragment.SelectedCategoryListener{
 	LayoutInflater inflater;
 	private DialogListener listener = null;
 	
@@ -121,13 +125,20 @@ public class EditItemDialogFragment extends DialogFragment{
         });
         
         // 編集の場合EditTextを元データで初期化する
-        if(editPosition >= 0){
+        if(editPosition >= 0){        	
         	int itemPrice = getArguments().getInt("item_price");
         	int itemNumber = getArguments().getInt("item_number");
+        	int itemCategory = getArguments().getInt("item_category");
         	
         	editItem.setText(getArguments().getString("item_name"));    	
         	editPrice.setText(Integer.toString(Math.abs(itemPrice)));
         	editNumber.setText(Integer.toString(itemNumber));
+        	btnCategory.setText(Integer.toString(itemCategory));
+        	if(itemCategory > 0){
+        		int color = getResources().getIdentifier("category_"+itemCategory, 
+        				"color", getActivity().getPackageName());
+				btnCategory.setBackgroundResource(color);
+        	}
         	
         	if(itemNumber > 1){        		
         		long totalPrice = itemPrice * itemNumber;		
@@ -141,6 +152,7 @@ public class EditItemDialogFragment extends DialogFragment{
 			public void onClick(View v) {
         		SelectCategoryDialogFragment newFragment;
         		newFragment = SelectCategoryDialogFragment.newInstance(0);
+        		newFragment.setSelectedCategoryListener(EditItemDialogFragment.this);
         		newFragment.show(getActivity().getFragmentManager(), "select_category_dialog");
         	}
         });
@@ -229,6 +241,7 @@ public class EditItemDialogFragment extends DialogFragment{
 		            		if(!errorMessage.equals("")) errorMessage += "\n";
 		            		errorMessage += "個数は1~9999までが有効です。";
 		            	}
+		            	//if(ItemIsE))
 		            	
 		            	//　エラーがある場合は警告ダイアログを表示
 		            	if(!errorMessage.equals("")){
@@ -241,6 +254,7 @@ public class EditItemDialogFragment extends DialogFragment{
 		            		String strItem   = etxtItem.getText().toString();
 		            		String strPrice  = etxtPrice.getText().toString();
 		            		String strNumber = etxtNumber.getText().toString();
+		            		String strCategory = btnCategory.getText().toString();
 				    	
 		            		// 数値に変換
 		            		int price = Integer.parseInt(strPrice);
@@ -248,18 +262,29 @@ public class EditItemDialogFragment extends DialogFragment{
 		            		if((String)plusMinusButton.getText() == getResources().getString(R.string.minus)){
 		            			price *= (-1);
 		            		}
+		            		int category = Integer.parseInt(strCategory);
+		            		if(category < 0) category = 0;
 		            		
 		            		// 項目を元のアクティビティに返す
 		            		ItemData itemData = new ItemData(strItem, price, editDate.getText().toString(),
-		            				number, 0);
-		            		Diary callingActivity = (Diary)getActivity();
-		            		// 何故かinitDateがdateEdit.getText().toString()に置き換わっているので新しく取り直す
-		            		Calendar initDate = Calendar.getInstance();
-		            		initDate.setTime(dc.ChangeToDate(getArguments().getString("init_date"))); 
-		            		callingActivity.onReturnValue(itemData, initDate, editPosition);  
+		            				number, category);
+		            		if(editPosition >= 0 && itemData == new ItemData(getArguments().getString("item_name"),
+		                			getArguments().getInt("item_price"),
+		                			getArguments().getString("init_date"),
+		                			getArguments().getInt("item_number"),
+		                			getArguments().getInt("item_category"))){
+		            			alertDialog.dismiss(); // ダイアログを閉じる
+		            		}
+		            		else{
+		            			Diary callingActivity = (Diary)getActivity();
+		            			// 何故かinitDateがdateEdit.getText().toString()に置き換わっているので新しく取り直す
+		            			Calendar initDate = Calendar.getInstance();
+		            			initDate.setTime(dc.ChangeToDate(getArguments().getString("init_date"))); 
+		            			callingActivity.onReturnValue(itemData, initDate, editPosition);  
 		            		
-		            		listener.doPositiveClick();
-			            	alertDialog.dismiss(); // ダイアログを閉じる
+		            			listener.doPositiveClick();
+			            		alertDialog.dismiss(); // ダイアログを閉じる
+		            		}
 		            	}  	            	           
 					}
 				});
@@ -299,5 +324,26 @@ public class EditItemDialogFragment extends DialogFragment{
 			long totalPrice = itemPrice * itemNumber;		
 			textTotalPrice.setText(Long.toString(totalPrice));
 		}
+	}
+
+	@Override
+	public void SelectedCategory(int selectedCategoryNum) {
+		final Button btnCategory = (Button)this.getDialog().findViewById(R.id.categoryButton);
+		
+		btnCategory.setText(Integer.toString(selectedCategoryNum));
+		
+		if(selectedCategoryNum == 0){
+			btnCategory.setBackgroundDrawable(getResources().getDrawable(R.drawable.color_select_button));
+		}
+		else if(selectedCategoryNum > 0){
+			int color = getResources().getIdentifier("category_"+selectedCategoryNum, 
+					"color", getActivity().getPackageName());
+		
+			btnCategory.setBackgroundResource(color);
+		}
+		//GradientDrawable myButton = (GradientDrawable)btnCategory.getBackground();
+		//myButton.setColor(color);
+		//myButton.setStroke(1, getResources().getColor(R.color.category_button_border));
+		
 	}
 }	

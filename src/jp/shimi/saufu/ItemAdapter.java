@@ -98,6 +98,13 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     		holder.textItem.setTextSize(Integer.parseInt(pref.getString("char_size", initFontSize)));
     		holder.textPrice.setTextSize(Integer.parseInt(pref.getString("char_size", initFontSize)));
     		
+    		// カテゴリー表示の背景色の設定
+    		if(item.GetCategory() > 0){
+    			int color = context.getResources().getIdentifier("category_"+item.GetCategory(), 
+    					"color", context.getPackageName());
+    			holder.btnCategory.setBackgroundResource(color);
+    		}
+    		
     		// 背景色を交互に変更
 			if(position % 2 == 0){
     			convertView.setBackgroundResource(R.drawable.list_item_color1);

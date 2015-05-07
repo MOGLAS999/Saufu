@@ -14,7 +14,8 @@
            style="?android:attr/buttonStyleSmall"
            android:layout_width="36dp"
            android:layout_height="match_parent"
-           android:text=""
+           android:text="0"
+           android:textSize="0dp"
            android:layout_margin="2dp"
            android:background="@drawable/color_select_button" />
 

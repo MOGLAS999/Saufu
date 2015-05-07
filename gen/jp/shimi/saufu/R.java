@@ -11,40 +11,49 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int category_0=0x7f050006;
+        public static final int category_0=0x7f05000c;
         /**  白 
          */
-        public static final int category_1=0x7f050007;
+        public static final int category_1=0x7f05000d;
         /**  赤 
          */
-        public static final int category_2=0x7f050008;
+        public static final int category_2=0x7f05000e;
         /**  橙 
          */
-        public static final int category_3=0x7f050009;
+        public static final int category_3=0x7f05000f;
         /**  黄 
          */
-        public static final int category_4=0x7f05000a;
+        public static final int category_4=0x7f050010;
         /**  黄緑 
          */
-        public static final int category_5=0x7f05000b;
+        public static final int category_5=0x7f050011;
         /**  緑 
          */
-        public static final int category_6=0x7f05000c;
+        public static final int category_6=0x7f050012;
         /**  水色 
          */
-        public static final int category_7=0x7f05000d;
+        public static final int category_7=0x7f050013;
         /**  青 
          */
-        public static final int category_8=0x7f05000e;
+        public static final int category_8=0x7f050014;
         /**  紫 
          */
-        public static final int category_9=0x7f05000f;
-        public static final int list_background_first_pressed=0x7f050001;
-        public static final int list_background_first_unpressed=0x7f050000;
-        public static final int list_background_second_pressed=0x7f050003;
-        public static final int list_background_second_unpressed=0x7f050002;
-        public static final int minus=0x7f050005;
-        public static final int plus=0x7f050004;
+        public static final int category_9=0x7f050015;
+        /**  文字列で呼び出すのでstring 
+         */
+        public static final int category_button_border=0x7f050016;
+        public static final int day_balance_background=0x7f050001;
+        public static final int day_balance_background_brown=0x7f050003;
+        public static final int day_balance_background_mono=0x7f050005;
+        public static final int day_date_background=0x7f050000;
+        public static final int day_date_background_brown=0x7f050002;
+        public static final int day_date_background_mono=0x7f050004;
+        public static final int list_background_first_pressed=0x7f050007;
+        public static final int list_background_first_unpressed=0x7f050006;
+        public static final int list_background_second_pressed=0x7f050009;
+        public static final int list_background_second_unpressed=0x7f050008;
+        public static final int minus=0x7f05000b;
+        public static final int plus=0x7f05000a;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 

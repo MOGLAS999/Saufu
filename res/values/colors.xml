@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="day_date_background">#33691e</color>
+    <color name="day_balance_background">#b2ff59</color>
+    
+    <color name="day_date_background_brown">#795548</color>
+    <color name="day_balance_background_brown">#d7ccc8</color>
+    
+    <color name="day_date_background_mono">#212121</color>
+    <color name="day_balance_background_mono">#bdbdbd</color>
+    
+    
     <color name="list_background_first_unpressed">#FFFFFF</color>
     <color name="list_background_first_pressed">#A9F5BC</color>
     
@@ -21,4 +31,6 @@
     <color name="category_9">#585858</color> <!-- 黒 -->
     
     <string name="item_number_color">#088A68</string> <!-- 文字列で呼び出すのでstring -->
+    
+    <color name="category_button_border">#000000</color>
 </resources>

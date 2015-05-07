@@ -106,7 +106,16 @@ public class DayData{
 			ExchangeItemPosition(position, position + 1);
 		}
 	}
-		
+	
+	public boolean ItemIsExist(String name){
+		for(int i = 0; i < this.itemList.size(); i++){
+			if(this.itemList.get(i).GetItem() == name){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void ShowListLog(){
 		for(int i = 0; i < this.itemList.size(); i++){
 			Log.d("ShowListLog", i+":"+this.itemList.get(i).GetItem()+":"+this.itemList.get(i).GetPrice());

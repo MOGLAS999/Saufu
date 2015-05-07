@@ -9,7 +9,7 @@
       android:id="@+id/txtDate" 
       android:layout_height="wrap_content" 
       android:layout_width="match_parent"
-      android:background="#003300"
+      android:background="@+color/day_date_background_mono"
       android:textColor="#FFFFFF" />
     
     <!--
@@ -31,6 +31,6 @@
       android:id="@+id/txtBalance" 
       android:layout_height="wrap_content" 
       android:layout_width="match_parent"
-      android:background="#33CC00" />
+      android:background="@+color/day_balance_background_mono" />
 
 </LinearLayout>

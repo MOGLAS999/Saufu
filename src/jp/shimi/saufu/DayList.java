@@ -216,6 +216,7 @@ public class DayList {
 	
 	// 指定した日付の次の日付を返す
 	public Calendar GetNextDate(Calendar date){
+		if(GetListSize() == 0) return GetData(0).GetDate();
 		for(int i = 1; i < GetListSize(); i++){
 			DayData d1 = GetData(i-1);
 			DayData d2 = GetData(i);
@@ -232,6 +233,7 @@ public class DayList {
 	
 	// 指定した日付の前の日付を返す
 	public Calendar GetBeforeDate(Calendar date){
+		if(GetListSize() == 0) return GetData(0).GetDate();
 		for(int i = 1; i < GetListSize(); i++){
 			DayData d1 = GetData(i-1);
 			DayData d2 = GetData(i);
@@ -243,7 +245,20 @@ public class DayList {
 				return d1.GetDate();
 			}
 		}
-		return GetData(0).GetDate();
+		return GetData(GetListSize() - 1).GetDate();
 	}
 	
+	// 指定した日に指定した名前のアイテムがあるかどうかを返す
+	public boolean ItemIsExist(Calendar date, String itemName){
+		DayData dd = GetData(date);
+		if(dd == null){
+			return false;
+		}
+		else{
+			if(dd.ItemIsExist(itemName)){
+				return true;
+			}
+			else return false;
+		}
+	}
 }

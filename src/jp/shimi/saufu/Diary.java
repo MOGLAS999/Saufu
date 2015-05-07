@@ -59,6 +59,9 @@ ItemAdapter.MoveItemListener{
         	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残高", 1, 1, 0);
     		dialog.CreateDialog();
         }
+        
+        // リストビューの表示
+        UpdateListViewAndScroll(lDay.GetListSize() - 1);
 	}
 	
 	@Override
@@ -89,12 +92,11 @@ ItemAdapter.MoveItemListener{
 	public void onResume(){
 		super.onResume();
 	
-		UpdateListViewAndScroll(lDay.GetListSize() - 1);
+		//UpdateListViewAndScroll(lDay.GetListSize() - 1);
 	}
 	
 	@Override
 	public void onClick(View v){
-		//EditItemDialog(Calendar.getInstance(), -1);
 		EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance());
 		dialog.CreateDialog();
 	}	
@@ -124,12 +126,14 @@ ItemAdapter.MoveItemListener{
 	
 	//　listViewの表示をlDayの状態と同期し、保持していた元の位置までスクロールする
 	private void UpdateListViewWithNoScroll(){
-		int position = listView.getFirstVisiblePosition();
-		int yOffset = listView.getChildAt(0).getTop();
+		if(listView.getChildCount() > 0){
+			int position = listView.getFirstVisiblePosition();
+			int yOffset = listView.getChildAt(0).getTop();
 		
-		UpdateListView();
+			UpdateListView();
 		
-		listView.setSelectionFromTop(position, yOffset);
+			listView.setSelectionFromTop(position, yOffset);
+		}
 	}
 	
 	/**
@@ -210,6 +214,10 @@ ItemAdapter.MoveItemListener{
 		lDay.GetData(item.GetDate()).DownItemPosition(itemPosition);
 		UpdateListViewWithNoScroll();
 	}
+	
+	/*public boolean ItemIsExistInDay(Calendar date, String name){
+		return lDay.ItemIsExist(date, name);
+	}*/
 	
 	public void LoadDayDataFromDB(){
 		MySQLiteOpenHelper helper = new MySQLiteOpenHelper(getApplicationContext());

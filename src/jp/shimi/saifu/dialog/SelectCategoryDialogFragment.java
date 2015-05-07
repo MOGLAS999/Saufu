@@ -1,5 +1,8 @@
 package jp.shimi.saifu.dialog;
 
+import java.util.EventListener;
+
+import jp.shimi.saifu.dialog.CheckDialogFragment.ClickedPositiveButtonListener;
 import jp.shimi.saufu.DayAdapter;
 import jp.shimi.saufu.Diary;
 import jp.shimi.saufu.R;
@@ -22,6 +25,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class SelectCategoryDialogFragment extends DialogFragment{
+	SelectedCategoryListener selectedCategoryListener = null;
+	
+	public interface SelectedCategoryListener extends EventListener{
+		public void SelectedCategory(int selectedCategoryNum);
+	}
 	
 	public static SelectCategoryDialogFragment newInstance(int categoryNum){
 		SelectCategoryDialogFragment fragment = new SelectCategoryDialogFragment();
@@ -88,7 +96,7 @@ public class SelectCategoryDialogFragment extends DialogFragment{
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.category_row, null);
@@ -103,9 +111,24 @@ public class SelectCategoryDialogFragment extends DialogFragment{
 			holder.btnCategory.setBackgroundColor(getResources().getColor(color));
 			holder.textCategory.setText("カテゴリー" + position);
 			
+			convertView.setOnClickListener(new View.OnClickListener() {
+	    		public void onClick(View view){            			
+	    			selectedCategoryListener.SelectedCategory(position);
+	    			dismiss();
+	    		}
+			});
+			
 			return convertView;
 		}
 		
+	}
+	
+	public void setSelectedCategoryListener(SelectedCategoryListener listener){
+	    this.selectedCategoryListener = listener;
+	}
+	    
+	public void removeSelectedCategoryListener(){
+	    this.selectedCategoryListener = null;
 	}
 
 }
