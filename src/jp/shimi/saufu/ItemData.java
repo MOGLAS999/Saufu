@@ -36,7 +36,14 @@ public class ItemData{
 		else{
 			this.date.setTime(dc.ChangeToDate(date));
 		}
-		
+	}
+	
+	public ItemData(String item, int price, Calendar date, int number, int category){
+		this.item = item;
+		this.price = price;
+		this.date = date;
+		this.number = number;
+		this.category = category;
 	}
 	
 	public String GetItem(){

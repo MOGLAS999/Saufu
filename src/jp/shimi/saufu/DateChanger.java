@@ -7,11 +7,11 @@ import java.util.Date;
 import android.util.Log;
 
 public class DateChanger {
-	private SimpleDateFormat df;
+	private final SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 	
-	public DateChanger(){
+	/*public DateChanger(){
 		this.df = new SimpleDateFormat("yyyy/MM/dd");
-	}
+	}*/
 	
 	public String ChangeToString(Date cDate){
 		return this.df.format(cDate);

@@ -10,11 +10,16 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
 public class CheckDialogFragment extends DialogFragment{
-	private ClickedPositiveButtonListener positiveListener = null;
+	protected ClickedPositiveButtonListener positiveListener = null;
+	protected ClickedNegativeButtonListener negativeListener = null;
 	
 	//　ポジティブボタンが押された際のリスナー
 	public interface ClickedPositiveButtonListener extends EventListener{
 		public void ClickedPositiveButton();
+	}
+	
+	public interface ClickedNegativeButtonListener extends EventListener{
+		public void ClickedNegativeButton();
 	}
 	
 	public static CheckDialogFragment newInstance(String title, String message){
@@ -68,5 +73,13 @@ public class CheckDialogFragment extends DialogFragment{
 	    
 	public void removeClickedPositiveButtonListener(){
 	    this.positiveListener = null;
+	}
+	
+	public void setClickedNegativeButtonListener(ClickedNegativeButtonListener listener){
+	    this.negativeListener = listener;
+	}
+	    
+	public void removeClickedNegativeButtonListener(){
+	    this.negativeListener = null;
 	}
 }

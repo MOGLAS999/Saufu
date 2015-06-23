@@ -167,6 +167,11 @@ public class DayList {
 		}
 	}
 	
+	// 指定した日にアイテムリストを上書きする
+	public void SetItemList(Calendar date, List<ItemData> itemList){
+		this.GetData(date).SetItemList(itemList);
+	}
+	
 	// 指定した日の指定した位置のアイテムデータを削除する
 	public void RemoveItemData(Calendar date, int itemPos){
 		int pos = GetDataPositionByDate(date);

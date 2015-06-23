@@ -228,6 +228,9 @@ implements SelectCategoryDialogFragment.SelectedCategoryListener{
 		            	if(etxtItem.getText().toString().equals("")){
 		            		errorMessage += "項目名を入力してください。";
 		            	}
+		            	else if(etxtItem.getText().toString().equals("")){
+		            		errorMessage += "同じ日付に同名の項目は追加できません。";
+		            	}
 		            	if(etxtPrice.getText().toString().equals("")){
 		            		if(!errorMessage.equals("")) errorMessage += "\n";
 		            		errorMessage += "価格を入力してください。";

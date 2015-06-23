@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.util.Log;
 
 /**
@@ -73,6 +74,10 @@ public class DayData{
 		this.itemList.set(index, newItem);
 	}
 	
+	public void SetItemList(List<ItemData> itemList){
+		this.itemList = itemList;
+	}
+	
 	public void RemoveItem(int index){
 		this.itemList.remove(index);
 	}
@@ -109,7 +114,7 @@ public class DayData{
 	
 	public boolean ItemIsExist(String name){
 		for(int i = 0; i < this.itemList.size(); i++){
-			if(this.itemList.get(i).GetItem() == name){
+			if(this.itemList.get(i).GetItem().equals(name)){
 				return true;
 			}
 		}
@@ -121,4 +126,5 @@ public class DayData{
 			Log.d("ShowListLog", i+":"+this.itemList.get(i).GetItem()+":"+this.itemList.get(i).GetPrice());
 		}
 	}
+
 }
