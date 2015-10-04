@@ -70,17 +70,17 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
         public static final int list_item_color1=0x7f020002;
         public static final int list_item_color2=0x7f020003;
+        public static final int saifu_log=0x7f020004;
     }
     public static final class id {
         public static final int LinearLayout2=0x7f0a0007;
         public static final int TextView2=0x7f0a0014;
-        public static final int action_settings=0x7f0a001f;
+        public static final int action_settings=0x7f0a001e;
         public static final int addButton1=0x7f0a0009;
         public static final int buttonCategory=0x7f0a001b;
         public static final int calendar_dialog=0x7f0a0000;
         public static final int categoryButton=0x7f0a000b;
         public static final int categoryColor=0x7f0a0002;
-        public static final int dayjump_calendar=0x7f0a001e;
         public static final int diaryListView=0x7f0a0008;
         public static final int diarydialog_layout=0x7f0a000a;
         public static final int editDialogDate=0x7f0a000c;
@@ -128,6 +128,7 @@ public final class R {
         public static final int dialog_number=0x7f060012;
         public static final int hello_world=0x7f060004;
         public static final int initial_font_size=0x7f060016;
+        public static final int initial_unit_string=0x7f060017;
         public static final int item=0x7f060007;
         /**  黒 
          */

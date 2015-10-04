@@ -76,10 +76,16 @@ ItemAdapter.MoveItemListener{
         			dialog.CreateDialog();
         		}
 			});
-    		holder.textBalance.setText("残金    " + day.GetStringBalance() + " 円");
     		
     		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-    		int textSize = Integer.parseInt(pref.getString("char_size", "16"));
+    		
+    		String initUnit = context.getResources().getString(R.string.initial_unit_string);
+    		String unit = pref.getString("unit_string", initUnit);
+    		
+    		holder.textBalance.setText("残金    " + day.GetStringBalance() + " " + unit);
+    		
+    		String initFontSize = context.getResources().getString(R.string.initial_font_size);
+    		int textSize = Integer.parseInt(pref.getString("char_size", initFontSize));
     		holder.textDate.setTextSize(textSize);
     		if(position == getCount() - 1){
     			holder.textBalance.setTextSize(textSize*(float)1.3);

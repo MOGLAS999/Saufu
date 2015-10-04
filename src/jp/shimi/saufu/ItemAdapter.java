@@ -75,20 +75,22 @@ public class ItemAdapter extends ArrayAdapter<ItemData>{
     			holder.textItem.setText(item.GetItem()); 
     		}
     		
+    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+    		
     		// 符号（プラスマイナス）を付ける
     		String sign = "";
     		int priceColor = context.getResources().getColor(R.color.minus);
+    		String initUnit = context.getResources().getString(R.string.initial_unit_string);
+    		String unit = pref.getString("unit_string", initUnit);
     		if(item.GetPrice() > 0){
     			sign = "+";
     			priceColor = context.getResources().getColor(R.color.plus);
     		}
-    		holder.textPrice.setText(sign + Integer.toString(item.GetTotalPrice()) + "円");
+    		holder.textPrice.setText(sign + Integer.toString(item.GetTotalPrice()) + unit);
     		holder.textPrice.setTextColor(priceColor);
     		
     		// 文字サイズの設定
-    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
     	    String initFontSize = context.getResources().getString(R.string.initial_font_size);
-    		
     		ViewGroup.LayoutParams params = holder.btnCategory.getLayoutParams();
     		params.width = (int) convertDpToPixel(Float.parseFloat(
     				pref.getString("char_size", initFontSize)), context);

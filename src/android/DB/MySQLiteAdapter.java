@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class MySQLiteAdapter {
 	static final private String DB_NAME = "Saifu.db";
@@ -189,7 +190,7 @@ public class MySQLiteAdapter {
 		while (isEOF) {
 			dayList.AddData(new DayData(dc.ChangeToCalendar(c.getString(0)), c.getInt(1)));
 		    isEOF = c.moveToNext();
-		}
+		}		
 		c.close();
 		
 		return dayList;

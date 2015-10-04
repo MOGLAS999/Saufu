@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Saufu</string>
+    <string name="app_name">Wallet Log</string>
     <string name="action_settings">設定</string>
     <string name="dayjump">選んだ日付まで移動</string>
     <string name="hello_world">Hello world!</string>
@@ -12,7 +12,7 @@
     <string name="printYen">価格</string>
     <string name="printPrice">価格</string>
     <string name="addString">項目を追加</string>
-    <string name="title_activity_diary">SaufuDiary</string>
+    <string name="title_activity_diary">Wallet Log</string>
     <string name="title_activity_preferences">設定</string>
     <string name="txtItem">品目名</string>
     <string name="txtPrice">価格</string>
@@ -23,5 +23,6 @@
     <string name="one">1</string>
     <string name="times">×</string>
     <string name="initial_font_size">18</string>
+    <string name="initial_unit_string">円</string>
 
 </resources>

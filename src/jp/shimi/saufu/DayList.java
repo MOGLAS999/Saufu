@@ -75,7 +75,10 @@ public class DayList {
 		
 	// 指定した位置のデータを返す
 	public DayData GetData(int index){
+		if(index < 0 || index >= this.GetListSize())
+			return null;
 		return this.dataList.get(index);
+		
 	}
 	
 	public DayData GetData(Calendar date){
@@ -190,9 +193,10 @@ public class DayList {
 			//Log.d("UpdateBalance", "error");
 		}else{
 			for(int i = index; i < GetListSize(); i++){
+				Log.d("UpdateBalance", ""+GetData(i).GetItemSize());
 				int balance;
 				if(i == 0) balance = 0;
-				else balance = GetData(i-1).GetBalance();
+				else balance = GetData(i-1).GetBalance(); // 指定した日付以前の日の残金
 				for(int j = 0; j < GetData(i).GetItemList().size(); j++){
 					balance += GetData(i).GetItemList().get(j).GetTotalPrice();
 				}
@@ -221,7 +225,8 @@ public class DayList {
 	
 	// 指定した日付の次の日付を返す
 	public Calendar GetNextDate(Calendar date){
-		if(GetListSize() == 0) return GetData(0).GetDate();
+		if(GetListSize() == 0) return null;
+		if(GetListSize() == 1) return GetData(0).GetDate();
 		for(int i = 1; i < GetListSize(); i++){
 			DayData d1 = GetData(i-1);
 			DayData d2 = GetData(i);
@@ -238,7 +243,8 @@ public class DayList {
 	
 	// 指定した日付の前の日付を返す
 	public Calendar GetBeforeDate(Calendar date){
-		if(GetListSize() == 0) return GetData(0).GetDate();
+		if(GetListSize() == 0) return null;
+		if(GetListSize() == 1) return GetData(0).GetDate();
 		for(int i = 1; i < GetListSize(); i++){
 			DayData d1 = GetData(i-1);
 			DayData d2 = GetData(i);

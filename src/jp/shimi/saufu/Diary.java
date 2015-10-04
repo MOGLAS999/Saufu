@@ -59,9 +59,9 @@ ItemAdapter.MoveItemListener, CheckNameDialogFragment.ClickedNamePositiveButtonL
         
         listView = (ListView)findViewById(R.id.diaryListView);
         
-        // 初期残高設定ダイアログ
+        // 初期残金設定ダイアログ
         if(lDay.GetListSize() == 0){
-        	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残高", 1, 1, 0);
+        	EditItemDialog dialog = new EditItemDialog(this, Calendar.getInstance(), 0, "初期残金", 1, 1, 0);
     		dialog.CreateDialog();
         }
         
@@ -83,11 +83,11 @@ ItemAdapter.MoveItemListener, CheckNameDialogFragment.ClickedNamePositiveButtonL
 				Intent intent = new Intent(this, Preferences.class);
 				startActivity(intent);
 				return true;
-			case R.id.dayjump_calendar:
+			/*case R.id.dayjump_calendar:
 				CalendarDialogFragment newFragment;
 				newFragment = CalendarDialogFragment.newInstance();
 				newFragment.show(getFragmentManager(), "calendar_dialog");
-				return true;
+				return true;*/
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -181,7 +181,7 @@ ItemAdapter.MoveItemListener, CheckNameDialogFragment.ClickedNamePositiveButtonL
 			// 項目が編集された日にスクロールする
 			UpdateListViewAndScroll(lDay.GetDataPositionByDate(itemData.GetDate()));
 		
-			if(!initDate.equals(itemData.GetDate())){
+			if(!initDate.equals(itemData.GetDate()) && d >= 0){
 				UpdateDayDataToDB(lDay.GetData(initDate));
 			}
 			UpdateDayDataToDB(lDay.GetData(itemData.GetDate()));
@@ -268,6 +268,7 @@ ItemAdapter.MoveItemListener, CheckNameDialogFragment.ClickedNamePositiveButtonL
 	public void UpdateDayDataToDB(DayData dayData){
 		MySQLiteAdapter dbAdapter = new MySQLiteAdapter(this);
 		
+		Log.d("UpdateDayDataToDB", dayData.GetStringDate());
 		DeleteDayDataFromDB(dayData.GetDate());
 		InsertDayDataToDB(dayData);
 		dbAdapter.insertItemList(dayData);

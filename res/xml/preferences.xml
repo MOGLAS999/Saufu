@@ -6,10 +6,16 @@
         <EditTextPreference
             android:key="char_size"
             android:title="フォントサイズ"
-            android:summary="文字の大きさ"
             android:dialogTitle="フォントサイズの変更"
             android:defaultValue="@string/initial_font_size"
             android:inputType="number" />
+        
+        <EditTextPreference
+            android:key="unit_string"
+            android:title="お金の単位"
+            android:dialogTitle="お金の単位の変更"
+            android:defaultValue="@string/initial_unit_string"
+            android:inputType="text" />
         
         <!--
         <EditTextPreference
